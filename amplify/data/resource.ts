@@ -6,70 +6,95 @@ adding a new "isDone" field as a boolean. The authorization rule below
 specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
-// const schema = a.schema({
-//   Todo: a
-//     .model({
-//       content: a.string(),
-//     })
-//     .authorization((allow) => [allow.publicApiKey()]),
-// });
+const schema = a.schema({
+  Exercise: a.model({
+    name: a.string(),
+    targetMuscles: a.string().array(),
+    description: a.string()
+  }).authorization((allow) => [allow.authenticated()]),
+  Workout: a.model({
+    name: a.string(),
+    description: a.string(),
+    exerciseids: a.id().array(),
+    exercises: a.hasMany("Exercise", "exerciseids"),
+    sessions: a.hasMany("Session", "workoutId")
+  }).authorization((allow) => [allow.authenticated()]),
+  Session: a.model({
+    workoutid: a.id(),
+    workoutData: a.hasOne("Workout", "workoutid")
+    fueledFeeling: a.string(),
+    muscleFeeling: a.string(),
+    sets: a.hasMany("setsBySessionId", "sessionId")
+  }).secondaryIndexes((index) => [index("workoutid"), index("sessionid")]).authorization((allow) => [allow.authenticated()]),
+  Set: a.model({
+    sessionid: a.id(),
+    exerciseid: a.id(),
+    exercises: a.hasOne("Exercise", "exerciseid"),
+    reps: a.string(),
+    weight: a.string(),
+    rangeOfMotion: a.string(),
+    feeling: a.string(),
+    effort: a.string(),
+  }).secondaryIndexes((index) => [index("exerciseid").sortKeys(["sessionid"]).name("SetsByExerciseId"), index("sessionid").sortKeys(["exerciseid"]).name("setsBySessionId")]).authorization((allow) => [allow.authenticated()]),
+});
 
-const schema = `type Exercise @model  @auth(rules: [ {allow: private, provider: userPools, operations: [read]}, { allow: private, provider: iam}])  {
-  id: ID!
-  name: String!
-  targetedMuscles: [String]
-  description: String
-}
+// const schema = `
+// type Exercise @model  @auth(rules: [ {allow: private, provider: userPools, operations: [read]}, { allow: private, provider: iam}])  {
+//   id: ID!
+//   name: String!
+//   targetedMuscles: [String]
+//   description: String
+// }
 
-type Workout @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
-  id: ID!
-  name: String!
-  exerciseids: [ID]
-  exercises: [Exercise] @hasMany(fields: ["exerciseids"])
-  description: String
-  sessions: [Session] @hasMany(indexName:"sessionByWorkout", fields:["id"])
-}
+// type Workout @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+//   id: ID!
+//   name: String!
+//   exerciseids: [ID]
+//   exercises: [Exercise] @hasMany(fields: ["exerciseids"])
+//   description: String
+//   sessions: [Session] @hasMany(indexName:"sessionByWorkout", fields:["id"])
+// }
 
-type Session @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
-  id: ID!
-  workout: ID @index(name: "sessionByWorkout", sortKeyFields: ["createdAt"])
-  fueledFeeling: String
-  muscleFeeling: String
-  sets: [Set] @hasMany(indexName:"setBySessionAndExercise", fields:["id"])
-  createdAt: String!
-  updatedAt: String!
-}
+// type Session @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+//   id: ID!
+//   workout: ID @index(name: "sessionByWorkout", sortKeyFields: ["createdAt"])
+//   fueledFeeling: String
+//   muscleFeeling: String
+//   sets: [Set] @hasMany(indexName:"setBySessionAndExercise", fields:["id"])
+//   createdAt: String!
+//   updatedAt: String!
+// }
 
-type Set @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
-  id: ID!
-  session: ID @index(name: "setBySessionAndExercise", sortKeyFields: ["exerciseid", "createdAt"]) @index(name: "setBySession", sortKeyFields: ["createdAt"])
-  exerciseid: ID @index(name: "setByExerciseAndSession", sortKeyFields: ["session", "createdAt"]) @index(name: "setByExercise", sortKeyFields: ["createdAt"])
-  exercise: Exercise @hasOne(fields: ["exerciseid"])
-  reps: String
-  weight: String
-  repsInReserve: String
-  rangeOfMotion: String
-  feeling: String
-  effort: String
-  createdAt: String!
-  updatedAt: String!
-}
+// type Set @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+//   id: ID!
+//   session: ID @index(name: "setBySessionAndExercise", sortKeyFields: ["exerciseid", "createdAt"]) @index(name: "setBySession", sortKeyFields: ["createdAt"])
+//   exerciseid: ID @index(name: "setByExerciseAndSession", sortKeyFields: ["session", "createdAt"]) @index(name: "setByExercise", sortKeyFields: ["createdAt"])
+//   exercise: Exercise @hasOne(fields: ["exerciseid"])
+//   reps: String
+//   weight: String
+//   repsInReserve: String
+//   rangeOfMotion: String
+//   feeling: String
+//   effort: String
+//   createdAt: String!
+//   updatedAt: String!
+// }
 
-type WorkoutPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
-  id: ID!
-  name: String!
-  workoutids: [ID]
-  workouts: [Workout] @hasMany(fields: ["workoutids"])
-  description: String
-}
+// type WorkoutPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+//   id: ID!
+//   name: String!
+//   workoutids: [ID]
+//   workouts: [Workout] @hasMany(fields: ["workoutids"])
+//   description: String
+// }
 
-type MesoPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
-  id: ID!
-  name: String!
-  workoutPeriodIds: [ID]
-  workoutPeriods: [WorkoutPeriod] @hasMany(fields: ["workoutPeriodIds"])
-  description: String
-}`
+// type MesoPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+//   id: ID!
+//   name: String!
+//   workoutPeriodIds: [ID]
+//   workoutPeriods: [WorkoutPeriod] @hasMany(fields: ["workoutPeriodIds"])
+//   description: String
+// }`
 
 
 export type Schema = ClientSchema<typeof schema>;
