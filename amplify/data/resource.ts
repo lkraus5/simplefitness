@@ -24,27 +24,26 @@ const schema = a.schema({
   Workout: a.model({
     name: a.string(),
     description: a.string(),
-    workoutPeriodId: a.id(),
-    workoutPeriod: a.belongsTo("WorkoutPeriod", "workoutPeriodId"),
+    periodId: a.id(),
+    period: a.belongsTo("WorkoutPeriod", "periodId"),
     exercises: a.hasMany("UserExercise", "workoutId"),
     sessions: a.hasMany("SessionsByWorkoutId", "workoutId")
   }).secondaryIndexes((index) => [index("workoutPeriodId").name("WorkoutByWorkoutPeriodId")]).authorization((allow) => [allow.authenticated()]),
   Session: a.model({
-    workoutId: a.id(),
-    workout: a.belongsTo("Workout", "workoutId"),
+    sessionWorkoutId: a.id(),
+    sessionWorkout: a.belongsTo("Workout", "sessionWorkoutId"),
     fueledFeeling: a.string(),
     muscleFeeling: a.string(),
-    sets: a.hasMany("setsBySessionId", "sessionId")
-  }).secondaryIndexes((index) => [index("workoutId").name("SessionsByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
+    sets: a.hasMany("setsBySessionId", "setSessionId")
+  }).secondaryIndexes((index) => [index("sessionWorkoutId").name("SessionsByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
   Set: a.model({
-    sessionId: a.id(),
-    session: a.belongsTo("Session", "sessionId"),
-    reps: a.string(),
+    setSessionId: a.id(),
+    setSession: a.belongsTo("Session", "setSessionId"),    reps: a.string(),
     weight: a.string(),
     rangeOfMotion: a.string(),
     feeling: a.string(),
     effort: a.string(),
-  }).secondaryIndexes((index) => [index("sessionId").name("setsBySessionId")]).authorization((allow) => [allow.authenticated()]),
+  }).secondaryIndexes((index) => [index("setSessionId").name("setsBySessionId")]).authorization((allow) => [allow.authenticated()]),
   WorkoutPeriod: a.model({
     workouts: a.hasMany("WorkoutByWorkoutPeriodId", "workoutPeriodId"),
     description: a.string(),
