@@ -24,11 +24,11 @@ const schema = a.schema({
   Workout: a.model({
     name: a.string(),
     description: a.string(),
-    workoutWorkoutPeriodId: a.id(),
-    workoutWorkoutPeriod: a.belongsTo("WorkoutPeriod", "workoutWorkoutPeriodId"),
+    workoutPeriodId: a.id(),
+    workoutPeriod: a.belongsTo("WorkoutPeriod", "workoutPeriodId"),
     exercises: a.hasMany("UserExercise", "workoutId"),
     sessions: a.hasMany("SessionsByWorkoutId", "workoutId")
-  }).secondaryIndexes((index) => [index("workoutWorkoutPeriodId").name("WorkoutByWorkoutPeriodId")]).authorization((allow) => [allow.authenticated()]),
+  }).secondaryIndexes((index) => [index("workoutPeriodId").name("WorkoutByWorkoutPeriodId")]).authorization((allow) => [allow.authenticated()]),
   Session: a.model({
     sessionWorkoutId: a.id(),
     sessionWorkout: a.belongsTo("Workout", "sessionWorkoutId"),
