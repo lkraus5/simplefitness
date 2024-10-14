@@ -1,0 +1,39 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-simplefitness-dev-435eb-authRole",
+      "UnauthRoleArn": "arn:aws:iam::022563204383:role/amplify-simplefitness-dev-435eb-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::022563204383:role/amplify-simplefitness-dev-435eb-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-simplefitness-dev-435eb-deployment",
+      "UnauthRoleName": "amplify-simplefitness-dev-435eb-unauthRole",
+      "StackName": "amplify-simplefitness-dev-435eb",
+      "StackId": "arn:aws:cloudformation:us-east-1:022563204383:stack/amplify-simplefitness-dev-435eb/c2213380-8966-11ef-bd6b-0e8391f62e67",
+      "AmplifyAppId": "d1echiud3mtklz"
+    },
+    "categories": {
+      "auth": {
+        "simplefitness505685ed": {}
+      }
+    }
+  },
+  "devone": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-simplefitness-devone-f8262-authRole",
+      "UnauthRoleArn": "arn:aws:iam::022563204383:role/amplify-simplefitness-devone-f8262-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::022563204383:role/amplify-simplefitness-devone-f8262-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-simplefitness-devone-f8262-deployment",
+      "UnauthRoleName": "amplify-simplefitness-devone-f8262-unauthRole",
+      "StackName": "amplify-simplefitness-devone-f8262",
+      "StackId": "arn:aws:cloudformation:us-east-1:022563204383:stack/amplify-simplefitness-devone-f8262/db9f6090-8a40-11ef-a9c8-0affc89b6327",
+      "AmplifyAppId": "d1echiud3mtklz"
+    },
+    "categories": {
+      "auth": {
+        "simplefitness505685ed": {},
+        "simplefitnessb9816bd4": {}
+      }
+    }
+  }
+}
