@@ -22,10 +22,6 @@ const schema = a.schema({
   Session: a.model({
     workoutid: a.id(),
     workoutData: a.hasOne("Workout", "workoutid"),
-    workoutMod: a.customType({
-      workoutExerciseid: a.id(),
-      modifiedWorkoutExerciseid: a.id()
-    }).array(),
     fueledFeeling: a.string(),
     muscleFeeling: a.string(),
     sets: a.hasMany("setsBySessionId", "sessionId")
