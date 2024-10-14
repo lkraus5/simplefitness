@@ -22,7 +22,7 @@ const schema = a.schema({
     name: a.string(),
     description: a.string(),
     workoutPeriodId: a.id(),
-    exercises: a.hasMany("UserExerciseByWorkoutId", "workoutId"),
+    exercises: a.hasMany("UserExercise", "workoutId"),
     sessions: a.hasMany("SessionsByWorkoutId", "workoutId")
   }).secondaryIndexes((index) => [index("workoutPeriodId").name("WorkoutByWorkoutPeriodId")]).authorization((allow) => [allow.authenticated()]),
   Session: a.model({
