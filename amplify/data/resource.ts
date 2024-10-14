@@ -6,20 +6,78 @@ adding a new "isDone" field as a boolean. The authorization rule below
 specifies that any user authenticated via an API key can "create", "read",
 "update", and "delete" any "Todo" records.
 =========================================================================*/
-const schema = a.schema({
-  Todo: a
-    .model({
-      content: a.string(),
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
-});
+// const schema = a.schema({
+//   Todo: a
+//     .model({
+//       content: a.string(),
+//     })
+//     .authorization((allow) => [allow.publicApiKey()]),
+// });
 
-export type Schema = ClientSchema<typeof schema>;
+const schema = `type Exercise @model  @auth(rules: [ {allow: private, provider: userPools, operations: [read]}, { allow: private, provider: iam}])  {
+  id: ID!
+  name: String!
+  targetedMuscles: [String]
+  description: String
+}
+
+type Workout @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+  id: ID!
+  name: String!
+  exerciseids: [ID]
+  exercises: [Exercise] @hasMany(fields: ["exerciseids"])
+  description: String
+  sessions: [Session] @hasMany(indexName:"sessionByWorkout", fields:["id"])
+}
+
+type Session @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+  id: ID!
+  workout: ID @index(name: "sessionByWorkout", sortKeyFields: ["createdAt"])
+  fueledFeeling: String
+  muscleFeeling: String
+  sets: [Set] @hasMany(indexName:"setBySessionAndExercise", fields:["id"])
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Set @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+  id: ID!
+  session: ID @index(name: "setBySessionAndExercise", sortKeyFields: ["exerciseid", "createdAt"]) @index(name: "setBySession", sortKeyFields: ["createdAt"])
+  exerciseid: ID @index(name: "setByExerciseAndSession", sortKeyFields: ["session", "createdAt"]) @index(name: "setByExercise", sortKeyFields: ["createdAt"])
+  exercise: Exercise @hasOne(fields: ["exerciseid"])
+  reps: String
+  weight: String
+  repsInReserve: String
+  rangeOfMotion: String
+  feeling: String
+  effort: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+type WorkoutPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+  id: ID!
+  name: String!
+  workoutids: [ID]
+  workouts: [Workout] @hasMany(fields: ["workoutids"])
+  description: String
+}
+
+type MesoPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
+  id: ID!
+  name: String!
+  workoutPeriodIds: [ID]
+  workoutPeriods: [WorkoutPeriod] @hasMany(fields: ["workoutPeriodIds"])
+  description: String
+}`
+
+
+// export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "apiKey",
+    defaultAuthorizationMode: "userPool",
     // API Key is used for a.allow.public() rules
     apiKeyAuthorizationMode: {
       expiresInDays: 30,
