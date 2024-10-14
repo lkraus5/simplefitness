@@ -25,7 +25,7 @@ const schema = a.schema({
     fueledFeeling: a.string(),
     muscleFeeling: a.string(),
     sets: a.hasMany("setsBySessionId", "sessionId")
-  }).secondaryIndexes((index) => [index("workoutid"), index("sessionid")]).authorization((allow) => [allow.authenticated()]),
+  }).secondaryIndexes((index) => [index("workoutid")]).authorization((allow) => [allow.authenticated()]),
   Set: a.model({
     sessionid: a.id(),
     exerciseid: a.id(),
