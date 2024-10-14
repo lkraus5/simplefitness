@@ -12,13 +12,19 @@ const schema = a.schema({
     targetMuscles: a.string().array(),
     description: a.string()
   }).authorization((allow) => [allow.authenticated()]),
+  UserExercise: a.model({
+    name: a.string(),
+    targetMuscles: a.string().array(),
+    description: a.string(),
+    workoutId: a.id(),
+  }).secondaryIndexes((index) => [index("workoutId").name("UserExerciseByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
   Workout: a.model({
     name: a.string(),
     description: a.string(),
-    exerciseIds: a.id().array(),
-    exercises: a.hasMany("Exercise", ["exerciseIds"]),
+    workoutPeriodId: a.id(),
+    exercises: a.hasMany("UserExerciseByWorkoutId", "workoutId"),
     sessions: a.hasMany("SessionsByWorkoutId", "workoutId")
-  }).authorization((allow) => [allow.authenticated()]),
+  }).secondaryIndexes((index) => [index("workoutPeriodId").name("WorkoutByWorkoutPeriodId")]).authorization((allow) => [allow.authenticated()]),
   Session: a.model({
     workoutid: a.id(),
     workoutData: a.hasOne("Workout", "workoutid"),
@@ -28,14 +34,23 @@ const schema = a.schema({
   }).secondaryIndexes((index) => [index("workoutid").name("SessionsByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
   Set: a.model({
     sessionid: a.id(),
-    exerciseid: a.id(),
-    exercises: a.hasOne("Exercise", "exerciseid"),
     reps: a.string(),
     weight: a.string(),
     rangeOfMotion: a.string(),
     feeling: a.string(),
     effort: a.string(),
-  }).secondaryIndexes((index) => [index("exerciseid").sortKeys(["sessionid"]).name("SetsByExerciseId"), index("sessionid").sortKeys(["exerciseid"]).name("setsBySessionId")]).authorization((allow) => [allow.authenticated()]),
+  }).secondaryIndexes((index) => [index("sessionid").name("setsBySessionId")]).authorization((allow) => [allow.authenticated()]),
+  WorkoutPeriod: a.model({
+    workouts: a.hasMany("WorkoutByWorkoutPeriodId", "workoutPeriodId"),
+    description: a.string(),
+    muscleFeeling: a.string(),
+    mesoPeroidId: a.id()
+  }).secondaryIndexes((index) => [index("mesoPeroidId").name("WorkoutPeriodByMesoId")]).authorization((allow) => [allow.authenticated()]),
+  MesoPeriod: a.model({
+    workoutPeriods: a.hasMany("WorkoutPeriodByMesoId", "mesoPeroidId"),
+    description: a.string(),
+    muscleFeeling: a.string(),
+  }).authorization((allow) => [allow.authenticated()]),
 });
 
 // const schema = `
