@@ -35,7 +35,7 @@ const schema = a.schema({
     fueledFeeling: a.string(),
     muscleFeeling: a.string(),
     sets: a.hasMany("setsBySessionId", "sessionId")
-  }).secondaryIndexes((index) => [index("workoutid").name("SessionsByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
+  }).secondaryIndexes((index) => [index("workoutId").name("SessionsByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
   Set: a.model({
     sessionId: a.id(),
     session: a.belongsTo("Session", "sessionId"),
@@ -44,7 +44,7 @@ const schema = a.schema({
     rangeOfMotion: a.string(),
     feeling: a.string(),
     effort: a.string(),
-  }).secondaryIndexes((index) => [index("sessionid").name("setsBySessionId")]).authorization((allow) => [allow.authenticated()]),
+  }).secondaryIndexes((index) => [index("sessionId").name("setsBySessionId")]).authorization((allow) => [allow.authenticated()]),
   WorkoutPeriod: a.model({
     workouts: a.hasMany("WorkoutByWorkoutPeriodId", "workoutPeriodId"),
     description: a.string(),
