@@ -19,23 +19,26 @@ const schema = a.schema({
     personalNotes: a.string(),
     exerciseId: a.id(),
     workoutId: a.id(),
+    workout: a.belongsTo("Workout", "workoutId"),
   }).secondaryIndexes((index) => [index("workoutId").name("UserExerciseByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
   Workout: a.model({
     name: a.string(),
     description: a.string(),
     workoutPeriodId: a.id(),
+    workoutPeriod: a.belongsTo("WorkoutPeriod", "workoutPeriodId"),
     exercises: a.hasMany("UserExercise", "workoutId"),
     sessions: a.hasMany("SessionsByWorkoutId", "workoutId")
   }).secondaryIndexes((index) => [index("workoutPeriodId").name("WorkoutByWorkoutPeriodId")]).authorization((allow) => [allow.authenticated()]),
   Session: a.model({
-    workoutid: a.id(),
-    workoutData: a.hasOne("Workout", "workoutid"),
+    workoutId: a.id(),
+    workout: a.belongsTo("Workout", "workoutId"),
     fueledFeeling: a.string(),
     muscleFeeling: a.string(),
     sets: a.hasMany("setsBySessionId", "sessionId")
   }).secondaryIndexes((index) => [index("workoutid").name("SessionsByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
   Set: a.model({
-    sessionid: a.id(),
+    sessionId: a.id(),
+    session: a.belongsTo("Session", "sessionId"),
     reps: a.string(),
     weight: a.string(),
     rangeOfMotion: a.string(),
@@ -46,7 +49,8 @@ const schema = a.schema({
     workouts: a.hasMany("WorkoutByWorkoutPeriodId", "workoutPeriodId"),
     description: a.string(),
     muscleFeeling: a.string(),
-    mesoPeroidId: a.id()
+    mesoPeroidId: a.id(),
+    mesoPeriod: a.belongsTo("MesoPeriod", "mesoPeroidId"),
   }).secondaryIndexes((index) => [index("mesoPeroidId").name("WorkoutPeriodByMesoId")]).authorization((allow) => [allow.authenticated()]),
   MesoPeriod: a.model({
     workoutPeriods: a.hasMany("WorkoutPeriodByMesoId", "mesoPeroidId"),
