@@ -38,7 +38,8 @@ const schema = a.schema({
   }).secondaryIndexes((index) => [index("sessionWorkoutId").name("SessionsByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
   Set: a.model({
     setSessionId: a.id(),
-    setSession: a.belongsTo("Session", "setSessionId"),    reps: a.string(),
+    setSession: a.belongsTo("Session", "setSessionId"),    
+    reps: a.string(),
     weight: a.string(),
     rangeOfMotion: a.string(),
     feeling: a.string(),
