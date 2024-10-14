@@ -72,7 +72,7 @@ type MesoPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider
 }`
 
 
-// export type Schema = ClientSchema<typeof schema>;
+export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
