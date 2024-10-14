@@ -16,6 +16,8 @@ const schema = a.schema({
     name: a.string(),
     targetMuscles: a.string().array(),
     description: a.string(),
+    personalNotes: a.string(),
+    exerciseId: a.id(),
     workoutId: a.id(),
   }).secondaryIndexes((index) => [index("workoutId").name("UserExerciseByWorkoutId")]).authorization((allow) => [allow.authenticated()]),
   Workout: a.model({
