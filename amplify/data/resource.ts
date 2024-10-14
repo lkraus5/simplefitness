@@ -21,7 +21,7 @@ const schema = a.schema({
   }).authorization((allow) => [allow.authenticated()]),
   Session: a.model({
     workoutid: a.id(),
-    workoutData: a.hasOne("Workout", "workoutid")
+    workoutData: a.hasOne("Workout", "workoutid"),
     fueledFeeling: a.string(),
     muscleFeeling: a.string(),
     sets: a.hasMany("setsBySessionId", "sessionId")
