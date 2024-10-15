@@ -1,31 +1,41 @@
-// import { useEffect, useState } from "react";
-// import type { Schema } from "../amplify/data/resource";
+import { Authenticator } from '@aws-amplify/ui-react'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+import './App.css'
+import {
+  Button
+} from "reactstrap";
 // import { generateClient } from "aws-amplify/data";
-
+// import ExerciseCreateForm from "../ui-components/ExerciseCreateForm"
+import SetupPage from './pages/Setup';
 // const client = generateClient<Schema>();
 
-function App() {
-  // const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
+export default function App() {
+  // const [workouts, setWorkouts] = useState<Array<Schema["Workout"]["type"]>>([]);
 
 
   return (
-    <main>
-      {/* <h1>My todos</h1> */}
-      {/* <button onClick={createTodo}>+ new</button> */}
-      {/* <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-      </ul> */}
-      {/* <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
-        </a>
-      </div> */}
-    </main>
-  );
+    <Authenticator loginMechanisms={['username']}>
+      {({ signOut }) => <>
+        <Router>
+          <nav className='mainNavbar'>
+            {/* <img src="/mooserun2Logo-smaller-transparent.png" alt="image" style={{height: "60px", width: "60px", top: "14px", left: "10px"}} /> */}
+
+
+            <Button className='signOutButton' onClick={signOut}>Sign out</Button>
+          </nav>
+          <main className='appMain'>
+            <Routes>
+              <Route path="/" element={<SetupPage />} />
+            </Routes>
+          </main>
+        </Router>
+      </>}
+    </Authenticator>
+  )
+
 }
 
-export default App;

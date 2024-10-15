@@ -1,0 +1,22 @@
+.computeExecutionSidebar {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 64px;
+    left: 0px;
+    width: 380px;
+    height: calc(100vh - 64px);
+    border-right: lightgrey 1rem solid;
+    background: #D3D3D3;
+  }
+  
+  .computeExecutionMainPanel {    
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - 380px);
+    height: calc(100vh - 64px);
+    position: fixed;
+    left: 380px;
+    top: 64px;
+    background: #F0F0F0;
+  }
