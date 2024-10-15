@@ -60,7 +60,7 @@ specifies that any user authenticated via an API key can "create", "read",
 // });
 
 const schema = `
-type Exercise @model  @auth(rules: [ {allow: private, provider: userPools]}, { allow: private, provider: iam}])  {
+type Exercise @model  @auth(rules: [ {allow: private, provider: userPools}, { allow: private, provider: iam}])  {
   id: ID!
   name: String!
   targetedMuscles: [String]
