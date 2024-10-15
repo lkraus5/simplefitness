@@ -60,7 +60,7 @@ specifies that any user authenticated via an API key can "create", "read",
 // });
 
 const schema = `
-type Exercise @model  @auth(rules: [ {allow: private, provider: userPools, operations: [read]}, { allow: private, provider: iam}])  {
+type Exercise @model  @auth(rules: [ {allow: private, provider: userPools}, { allow: private, provider: iam}])  {
   id: ID!
   name: String!
   targetedMuscles: [String]
@@ -118,12 +118,12 @@ type MesoPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider
 }`
 
 
-// export type Schema = ClientSchema<typeof schema>;
+// export type Schema = ClientSchema <typeof schema>;
 
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "userPool",
+    defaultAuthorizationMode: "authenticated",
   },
 });
 
