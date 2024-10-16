@@ -6,7 +6,7 @@ import {
 } from "reactstrap";
 // import { generateClient } from "aws-amplify/data";
 // import ExerciseCreateForm from "../ui-components/ExerciseCreateForm"
-import SetupPage from './pages/Setup';
+import ExercisesPage from './pages/ExercisesPage';
 // const client = generateClient<Schema>();
 
 export default function App() {
@@ -21,7 +21,7 @@ export default function App() {
           </nav>
           <main className='appMain'>
             <Routes>
-              <Route path="/" element={<SetupPage />} />
+              <Route path="/" element={<ExercisesPage />} />
             </Routes>
           </main>
         </Router>

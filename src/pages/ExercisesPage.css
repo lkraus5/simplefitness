@@ -10,7 +10,7 @@
     background: #D3D3D3;
   }
   
-  .computeExecutionMainPanel {    
+  .MainPanel {    
     display: flex;
     flex-direction: column;
     width: calc(100vw - 380px);

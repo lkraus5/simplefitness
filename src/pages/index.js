@@ -1,1 +1,1 @@
-export { default as SetupPage } from "./Setup";
+export { default as SetupPage } from "./ExercisesPage";
