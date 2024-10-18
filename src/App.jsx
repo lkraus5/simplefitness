@@ -6,7 +6,7 @@ import {
 } from "reactstrap";
 // import { generateClient } from "aws-amplify/data";
 // import ExerciseCreateForm from "../ui-components/ExerciseCreateForm"
-import ExercisesPage from './pages/ExercisesPage';
+import MesoPage from './pages/MesoPage';
 // const client = generateClient<Schema>();
 
 export default function App() {
@@ -19,11 +19,9 @@ export default function App() {
           <nav className='mainNavbar'>
             <Button className='signOutButton' onClick={signOut}>Sign out</Button>
           </nav>
-          <main className='appMain'>
             <Routes>
-              <Route path="/" element={<ExercisesPage />} />
+              <Route path="/" element={<MesoPage />} />
             </Routes>
-          </main>
         </Router>
       </>}
     </Authenticator>
