@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
-// import { Schema } from '../models';
-import './MesoPage.css'
+import './AdminPage.css'
+import React, { useState, Suspense } from 'react';
 import { listExercises  } from '../../ui-components/graphql/queries'
-// import {
-//   Button
-// } from "reactstrap";
 import { generateClient } from "aws-amplify/data";
-// import WorkoutCreateForm from "../../ui-components/WorkoutCreateForm"
 
 
 
@@ -36,9 +31,6 @@ import {
     // Label,
   } from "reactstrap";
 
-// const { data: exercises, errors } = await client.models.Exercise.list();
-// console.log(data)
-
 const listExercisesData = async () => {
     const client = generateClient();
     let Data = await client.graphql({query: listExercises })
@@ -49,13 +41,33 @@ const listExercisesData = async () => {
         rawdata = Data.data.listExercises
         Items = Items.concat( rawdata.items )
     }
-    console.log({Items})
+    // console.log({Items})
     return(Items)
 }
 
+const ExerciseList = () => {
+  const [exercises] = useState();
+  if (exercises.length() > 0) {
+    return(exercises.map((exercise) => {
+      return(<>
+        <li>
+          {exercise.name}
+        </li>
+      </>)
+    }))
+  } else {
+    return(<></>)
+  }
+  
+}
 
-  export default function MesoPage() {
+
+  export default function AdminPage() {
+    const [exercises, setExercises] = useState(['']);
+    setExercises(listExercisesData())
+
+    
     return(<>
-    Meso Page Here
+        <ExerciseList />
     </>)
 }

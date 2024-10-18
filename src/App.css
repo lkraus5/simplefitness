@@ -34,3 +34,58 @@ main {
   top:10px
 }
 
+.Sidebar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 64px;
+  left: 0px;
+  width: 380px;
+  height: calc(100vh - 64px);
+  border-right: lightgrey 1rem solid;
+  background: #D3D3D3;
+}
+
+.MainPanel {    
+  display: flex;
+  flex-direction: column;
+  width: calc(100vw - 380px);
+  height: calc(100vh - 64px);
+  position: fixed;
+  left: 380px;
+  top: 64px;
+  background: #F0F0F0;
+}
+
+.sidebarListGroup {
+  display: inline-block;
+  position: relative;
+  top: 55px;
+  background-color: #D3D3D3;
+  max-height: calc(100vh - 150px);
+  border: none;
+}
+.sidebarListGroupItem {
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-size: 14px;
+  background-color: #D3D3D3;
+  border-top: #E2E2E2 1px;
+}
+
+.sidebarListGroupItem:hover {
+  background-color: #bebebe;
+}
+
+
+.sidebarObjSize {
+  display: inline-block;
+  width: 340px;
+  position: relative;
+  left: 10px;
+}
+
+.sidebarListGroupHorizontal {
+  height: 1px;
+  color: #E2E2E2;
+}

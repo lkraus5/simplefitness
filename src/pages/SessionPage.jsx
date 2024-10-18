@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import './ExercisesPage.css'
+import './SessionPage.css'
 // import {
 //   Button
 // } from "reactstrap";
@@ -33,23 +33,9 @@ import {
     // Label,
   } from "reactstrap";
 
-export default function ExercisesPage() {
+export default function SessionPage() {
     return(<>
-        <main className='appMain'>
-            <div className='Sidebar'>
-                <ListGroup className='sidebarListGroup' flush>
-                    <Link to="/"><ListGroupItem className='sidebarObjSize sidebarListGroupItem'>Manage Exercises</ListGroupItem></Link>
-                </ListGroup>
-            </div>
-            <div className='MainPanel'>
-                <div>
-                    <ExerciseCreateForm />
-                </div>
-                <div>
-                    <ExercisesList />
-                </div>
-            </div>
-        </main>
+
     </>)
 
 }
