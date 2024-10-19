@@ -116,6 +116,7 @@ type MesoPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider
   id: ID!
   name: String!
   workoutPeriods: [WorkoutPeriod]  @hasMany(indexName:"workoutPeriodByMesoPeriod", fields:["id"])
+  periodLength: String
   description: String
   createdAt: String!
   updatedAt: String!
