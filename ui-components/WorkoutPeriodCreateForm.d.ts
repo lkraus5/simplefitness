@@ -19,11 +19,15 @@ export declare type WorkoutPeriodCreateFormInputValues = {
     name?: string;
     workoutids?: string[];
     description?: string;
+    createdAt?: string;
+    updatedAt?: string;
 };
 export declare type WorkoutPeriodCreateFormValidationValues = {
     name?: ValidationFunction<string>;
     workoutids?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
+    createdAt?: ValidationFunction<string>;
+    updatedAt?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type WorkoutPeriodCreateFormOverridesProps = {
@@ -31,6 +35,8 @@ export declare type WorkoutPeriodCreateFormOverridesProps = {
     name?: PrimitiveOverrideProps<TextFieldProps>;
     workoutids?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
+    createdAt?: PrimitiveOverrideProps<TextFieldProps>;
+    updatedAt?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type WorkoutPeriodCreateFormProps = React.PropsWithChildren<{
     overrides?: WorkoutPeriodCreateFormOverridesProps | undefined | null;

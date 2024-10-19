@@ -29,8 +29,8 @@ export const createMesoPeriod = /* GraphQL */ `
       id
       name
       owner
+      periodLength
       updatedAt
-      workoutPeriodIds
       workoutPeriods {
         nextToken
         __typename
@@ -125,6 +125,7 @@ export const createWorkoutPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      mesoPeriod
       name
       owner
       updatedAt
@@ -164,8 +165,8 @@ export const deleteMesoPeriod = /* GraphQL */ `
       id
       name
       owner
+      periodLength
       updatedAt
-      workoutPeriodIds
       workoutPeriods {
         nextToken
         __typename
@@ -260,6 +261,7 @@ export const deleteWorkoutPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      mesoPeriod
       name
       owner
       updatedAt
@@ -299,8 +301,8 @@ export const updateMesoPeriod = /* GraphQL */ `
       id
       name
       owner
+      periodLength
       updatedAt
-      workoutPeriodIds
       workoutPeriods {
         nextToken
         __typename
@@ -395,6 +397,7 @@ export const updateWorkoutPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      mesoPeriod
       name
       owner
       updatedAt

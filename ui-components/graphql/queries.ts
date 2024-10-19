@@ -23,8 +23,8 @@ export const getMesoPeriod = /* GraphQL */ `
       id
       name
       owner
+      periodLength
       updatedAt
-      workoutPeriodIds
       workoutPeriods {
         nextToken
         __typename
@@ -107,6 +107,7 @@ export const getWorkoutPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      mesoPeriod
       name
       owner
       updatedAt
@@ -153,8 +154,8 @@ export const listMesoPeriods = /* GraphQL */ `
         id
         name
         owner
+        periodLength
         updatedAt
-        workoutPeriodIds
         __typename
       }
       nextToken
@@ -222,6 +223,7 @@ export const listWorkoutPeriods = /* GraphQL */ `
         createdAt
         description
         id
+        mesoPeriod
         name
         owner
         updatedAt
@@ -428,6 +430,39 @@ export const setsBySessionAndExerciseidAndCreatedAt = /* GraphQL */ `
         session
         updatedAt
         weight
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const workoutPeriodsByMesoPeriodAndCreatedAt = /* GraphQL */ `
+  query WorkoutPeriodsByMesoPeriodAndCreatedAt(
+    $createdAt: ModelStringKeyConditionInput
+    $filter: ModelWorkoutPeriodFilterInput
+    $limit: Int
+    $mesoPeriod: ID!
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    workoutPeriodsByMesoPeriodAndCreatedAt(
+      createdAt: $createdAt
+      filter: $filter
+      limit: $limit
+      mesoPeriod: $mesoPeriod
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        createdAt
+        description
+        id
+        mesoPeriod
+        name
+        owner
+        updatedAt
+        workoutids
         __typename
       }
       nextToken

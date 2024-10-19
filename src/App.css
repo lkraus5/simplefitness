@@ -49,12 +49,13 @@ main {
 .MainPanel {    
   display: flex;
   flex-direction: column;
-  width: calc(100vw - 380px);
   height: calc(100vh - 64px);
+  width: 100vw;
   position: fixed;
-  left: 380px;
+  left: 0px;
   top: 64px;
   background: #F0F0F0;
+  z-index: 0;
 }
 
 .sidebarListGroup {
@@ -75,6 +76,20 @@ main {
 
 .sidebarListGroupItem:hover {
   background-color: #bebebe;
+}
+
+.navDropdown{
+  z-index: 2;
+  background-color: rgb(255 255 255);
+}
+
+.dropdownBox {
+  width: 100vw;
+  height: fit-content;
+}
+
+.navDropdownItem {
+  padding: 10px;
 }
 
 

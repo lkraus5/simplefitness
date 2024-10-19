@@ -1,178 +1,12 @@
 /* eslint-disable */
 "use client";
 import * as React from "react";
-import {
-  Badge,
-  Button,
-  Divider,
-  Flex,
-  Grid,
-  Icon,
-  ScrollView,
-  Text,
-  TextField,
-  useTheme,
-} from "@aws-amplify/ui-react";
+import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
 import { getMesoPeriod } from "./graphql/queries";
 import { updateMesoPeriod } from "./graphql/mutations";
 const client = generateClient();
-function ArrayField({
-  items = [],
-  onChange,
-  label,
-  inputFieldRef,
-  children,
-  hasError,
-  setFieldValue,
-  currentFieldValue,
-  defaultFieldValue,
-  lengthLimit,
-  getBadgeText,
-  runValidationTasks,
-  errorMessage,
-}) {
-  const labelElement = <Text>{label}</Text>;
-  const {
-    tokens: {
-      components: {
-        fieldmessages: { error: errorStyles },
-      },
-    },
-  } = useTheme();
-  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
-  const [isEditing, setIsEditing] = React.useState();
-  React.useEffect(() => {
-    if (isEditing) {
-      inputFieldRef?.current?.focus();
-    }
-  }, [isEditing]);
-  const removeItem = async (removeIndex) => {
-    const newItems = items.filter((value, index) => index !== removeIndex);
-    await onChange(newItems);
-    setSelectedBadgeIndex(undefined);
-  };
-  const addItem = async () => {
-    const { hasError } = runValidationTasks();
-    if (
-      currentFieldValue !== undefined &&
-      currentFieldValue !== null &&
-      currentFieldValue !== "" &&
-      !hasError
-    ) {
-      const newItems = [...items];
-      if (selectedBadgeIndex !== undefined) {
-        newItems[selectedBadgeIndex] = currentFieldValue;
-        setSelectedBadgeIndex(undefined);
-      } else {
-        newItems.push(currentFieldValue);
-      }
-      await onChange(newItems);
-      setIsEditing(false);
-    }
-  };
-  const arraySection = (
-    <React.Fragment>
-      {!!items?.length && (
-        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
-          {items.map((value, index) => {
-            return (
-              <Badge
-                key={index}
-                style={{
-                  cursor: "pointer",
-                  alignItems: "center",
-                  marginRight: 3,
-                  marginTop: 3,
-                  backgroundColor:
-                    index === selectedBadgeIndex ? "#B8CEF9" : "",
-                }}
-                onClick={() => {
-                  setSelectedBadgeIndex(index);
-                  setFieldValue(items[index]);
-                  setIsEditing(true);
-                }}
-              >
-                {getBadgeText ? getBadgeText(value) : value.toString()}
-                <Icon
-                  style={{
-                    cursor: "pointer",
-                    paddingLeft: 3,
-                    width: 20,
-                    height: 20,
-                  }}
-                  viewBox={{ width: 20, height: 20 }}
-                  paths={[
-                    {
-                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
-                      stroke: "black",
-                    },
-                  ]}
-                  ariaLabel="button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    removeItem(index);
-                  }}
-                />
-              </Badge>
-            );
-          })}
-        </ScrollView>
-      )}
-      <Divider orientation="horizontal" marginTop={5} />
-    </React.Fragment>
-  );
-  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
-    return (
-      <React.Fragment>
-        {labelElement}
-        {arraySection}
-      </React.Fragment>
-    );
-  }
-  return (
-    <React.Fragment>
-      {labelElement}
-      {isEditing && children}
-      {!isEditing ? (
-        <>
-          <Button
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          >
-            Add item
-          </Button>
-          {errorMessage && hasError && (
-            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
-              {errorMessage}
-            </Text>
-          )}
-        </>
-      ) : (
-        <Flex justifyContent="flex-end">
-          {(currentFieldValue || isEditing) && (
-            <Button
-              children="Cancel"
-              type="button"
-              size="small"
-              onClick={() => {
-                setFieldValue(defaultFieldValue);
-                setIsEditing(false);
-                setSelectedBadgeIndex(undefined);
-              }}
-            ></Button>
-          )}
-          <Button size="small" variation="link" onClick={addItem}>
-            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
-          </Button>
-        </Flex>
-      )}
-      {arraySection}
-    </React.Fragment>
-  );
-}
 export default function MesoPeriodUpdateForm(props) {
   const {
     id: idProp,
@@ -187,25 +21,30 @@ export default function MesoPeriodUpdateForm(props) {
   } = props;
   const initialValues = {
     name: "",
-    workoutPeriodIds: [],
+    periodLength: "",
     description: "",
+    createdAt: "",
+    updatedAt: "",
   };
   const [name, setName] = React.useState(initialValues.name);
-  const [workoutPeriodIds, setWorkoutPeriodIds] = React.useState(
-    initialValues.workoutPeriodIds
+  const [periodLength, setPeriodLength] = React.useState(
+    initialValues.periodLength
   );
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [createdAt, setCreatedAt] = React.useState(initialValues.createdAt);
+  const [updatedAt, setUpdatedAt] = React.useState(initialValues.updatedAt);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = mesoPeriodRecord
       ? { ...initialValues, ...mesoPeriodRecord }
       : initialValues;
     setName(cleanValues.name);
-    setWorkoutPeriodIds(cleanValues.workoutPeriodIds ?? []);
-    setCurrentWorkoutPeriodIdsValue("");
+    setPeriodLength(cleanValues.periodLength);
     setDescription(cleanValues.description);
+    setCreatedAt(cleanValues.createdAt);
+    setUpdatedAt(cleanValues.updatedAt);
     setErrors({});
   };
   const [mesoPeriodRecord, setMesoPeriodRecord] =
@@ -225,13 +64,12 @@ export default function MesoPeriodUpdateForm(props) {
     queryData();
   }, [idProp, mesoPeriodModelProp]);
   React.useEffect(resetStateValues, [mesoPeriodRecord]);
-  const [currentWorkoutPeriodIdsValue, setCurrentWorkoutPeriodIdsValue] =
-    React.useState("");
-  const workoutPeriodIdsRef = React.createRef();
   const validations = {
     name: [{ type: "Required" }],
-    workoutPeriodIds: [],
+    periodLength: [],
     description: [],
+    createdAt: [{ type: "Required" }],
+    updatedAt: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -260,8 +98,10 @@ export default function MesoPeriodUpdateForm(props) {
         event.preventDefault();
         let modelFields = {
           name,
-          workoutPeriodIds: workoutPeriodIds ?? null,
+          periodLength: periodLength ?? null,
           description: description ?? null,
+          createdAt,
+          updatedAt,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -323,8 +163,10 @@ export default function MesoPeriodUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               name: value,
-              workoutPeriodIds,
+              periodLength,
               description,
+              createdAt,
+              updatedAt,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -339,58 +181,34 @@ export default function MesoPeriodUpdateForm(props) {
         hasError={errors.name?.hasError}
         {...getOverrideProps(overrides, "name")}
       ></TextField>
-      <ArrayField
-        onChange={async (items) => {
-          let values = items;
+      <TextField
+        label="Period length"
+        isRequired={false}
+        isReadOnly={false}
+        value={periodLength}
+        onChange={(e) => {
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
               name,
-              workoutPeriodIds: values,
+              periodLength: value,
               description,
+              createdAt,
+              updatedAt,
             };
             const result = onChange(modelFields);
-            values = result?.workoutPeriodIds ?? values;
+            value = result?.periodLength ?? value;
           }
-          setWorkoutPeriodIds(values);
-          setCurrentWorkoutPeriodIdsValue("");
+          if (errors.periodLength?.hasError) {
+            runValidationTasks("periodLength", value);
+          }
+          setPeriodLength(value);
         }}
-        currentFieldValue={currentWorkoutPeriodIdsValue}
-        label={"Workout period ids"}
-        items={workoutPeriodIds}
-        hasError={errors?.workoutPeriodIds?.hasError}
-        runValidationTasks={async () =>
-          await runValidationTasks(
-            "workoutPeriodIds",
-            currentWorkoutPeriodIdsValue
-          )
-        }
-        errorMessage={errors?.workoutPeriodIds?.errorMessage}
-        setFieldValue={setCurrentWorkoutPeriodIdsValue}
-        inputFieldRef={workoutPeriodIdsRef}
-        defaultFieldValue={""}
-      >
-        <TextField
-          label="Workout period ids"
-          isRequired={false}
-          isReadOnly={false}
-          value={currentWorkoutPeriodIdsValue}
-          onChange={(e) => {
-            let { value } = e.target;
-            if (errors.workoutPeriodIds?.hasError) {
-              runValidationTasks("workoutPeriodIds", value);
-            }
-            setCurrentWorkoutPeriodIdsValue(value);
-          }}
-          onBlur={() =>
-            runValidationTasks("workoutPeriodIds", currentWorkoutPeriodIdsValue)
-          }
-          errorMessage={errors.workoutPeriodIds?.errorMessage}
-          hasError={errors.workoutPeriodIds?.hasError}
-          ref={workoutPeriodIdsRef}
-          labelHidden={true}
-          {...getOverrideProps(overrides, "workoutPeriodIds")}
-        ></TextField>
-      </ArrayField>
+        onBlur={() => runValidationTasks("periodLength", periodLength)}
+        errorMessage={errors.periodLength?.errorMessage}
+        hasError={errors.periodLength?.hasError}
+        {...getOverrideProps(overrides, "periodLength")}
+      ></TextField>
       <TextField
         label="Description"
         isRequired={false}
@@ -401,8 +219,10 @@ export default function MesoPeriodUpdateForm(props) {
           if (onChange) {
             const modelFields = {
               name,
-              workoutPeriodIds,
+              periodLength,
               description: value,
+              createdAt,
+              updatedAt,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -416,6 +236,62 @@ export default function MesoPeriodUpdateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
+      ></TextField>
+      <TextField
+        label="Created at"
+        isRequired={true}
+        isReadOnly={false}
+        value={createdAt}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              periodLength,
+              description,
+              createdAt: value,
+              updatedAt,
+            };
+            const result = onChange(modelFields);
+            value = result?.createdAt ?? value;
+          }
+          if (errors.createdAt?.hasError) {
+            runValidationTasks("createdAt", value);
+          }
+          setCreatedAt(value);
+        }}
+        onBlur={() => runValidationTasks("createdAt", createdAt)}
+        errorMessage={errors.createdAt?.errorMessage}
+        hasError={errors.createdAt?.hasError}
+        {...getOverrideProps(overrides, "createdAt")}
+      ></TextField>
+      <TextField
+        label="Updated at"
+        isRequired={true}
+        isReadOnly={false}
+        value={updatedAt}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              periodLength,
+              description,
+              createdAt,
+              updatedAt: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.updatedAt ?? value;
+          }
+          if (errors.updatedAt?.hasError) {
+            runValidationTasks("updatedAt", value);
+          }
+          setUpdatedAt(value);
+        }}
+        onBlur={() => runValidationTasks("updatedAt", updatedAt)}
+        errorMessage={errors.updatedAt?.errorMessage}
+        hasError={errors.updatedAt?.hasError}
+        {...getOverrideProps(overrides, "updatedAt")}
       ></TextField>
       <Flex
         justifyContent="space-between"

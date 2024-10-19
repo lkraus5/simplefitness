@@ -284,7 +284,6 @@ export default function ExerciseCreateForm(props) {
             resetStateValues();
           }
         } catch (err) {
-          console.log({err})
           if (onError) {
             const messages = err.errors.map((e) => e.message).join("\n");
             onError(modelFields, messages);

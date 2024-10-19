@@ -18,20 +18,26 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type MesoPeriodUpdateFormInputValues = {
     name?: string;
-    workoutPeriodIds?: string[];
+    periodLength?: string;
     description?: string;
+    createdAt?: string;
+    updatedAt?: string;
 };
 export declare type MesoPeriodUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
-    workoutPeriodIds?: ValidationFunction<string>;
+    periodLength?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
+    createdAt?: ValidationFunction<string>;
+    updatedAt?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MesoPeriodUpdateFormOverridesProps = {
     MesoPeriodUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
-    workoutPeriodIds?: PrimitiveOverrideProps<TextFieldProps>;
+    periodLength?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
+    createdAt?: PrimitiveOverrideProps<TextFieldProps>;
+    updatedAt?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MesoPeriodUpdateFormProps = React.PropsWithChildren<{
     overrides?: MesoPeriodUpdateFormOverridesProps | undefined | null;

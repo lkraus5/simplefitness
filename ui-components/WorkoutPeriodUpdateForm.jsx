@@ -189,12 +189,16 @@ export default function WorkoutPeriodUpdateForm(props) {
     name: "",
     workoutids: [],
     description: "",
+    createdAt: "",
+    updatedAt: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [workoutids, setWorkoutids] = React.useState(initialValues.workoutids);
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [createdAt, setCreatedAt] = React.useState(initialValues.createdAt);
+  const [updatedAt, setUpdatedAt] = React.useState(initialValues.updatedAt);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = workoutPeriodRecord
@@ -204,6 +208,8 @@ export default function WorkoutPeriodUpdateForm(props) {
     setWorkoutids(cleanValues.workoutids ?? []);
     setCurrentWorkoutidsValue("");
     setDescription(cleanValues.description);
+    setCreatedAt(cleanValues.createdAt);
+    setUpdatedAt(cleanValues.updatedAt);
     setErrors({});
   };
   const [workoutPeriodRecord, setWorkoutPeriodRecord] = React.useState(
@@ -231,6 +237,8 @@ export default function WorkoutPeriodUpdateForm(props) {
     name: [{ type: "Required" }],
     workoutids: [],
     description: [],
+    createdAt: [{ type: "Required" }],
+    updatedAt: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -261,6 +269,8 @@ export default function WorkoutPeriodUpdateForm(props) {
           name,
           workoutids: workoutids ?? null,
           description: description ?? null,
+          createdAt,
+          updatedAt,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -324,6 +334,8 @@ export default function WorkoutPeriodUpdateForm(props) {
               name: value,
               workoutids,
               description,
+              createdAt,
+              updatedAt,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -346,6 +358,8 @@ export default function WorkoutPeriodUpdateForm(props) {
               name,
               workoutids: values,
               description,
+              createdAt,
+              updatedAt,
             };
             const result = onChange(modelFields);
             values = result?.workoutids ?? values;
@@ -399,6 +413,8 @@ export default function WorkoutPeriodUpdateForm(props) {
               name,
               workoutids,
               description: value,
+              createdAt,
+              updatedAt,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -412,6 +428,62 @@ export default function WorkoutPeriodUpdateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
+      ></TextField>
+      <TextField
+        label="Created at"
+        isRequired={true}
+        isReadOnly={false}
+        value={createdAt}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              workoutids,
+              description,
+              createdAt: value,
+              updatedAt,
+            };
+            const result = onChange(modelFields);
+            value = result?.createdAt ?? value;
+          }
+          if (errors.createdAt?.hasError) {
+            runValidationTasks("createdAt", value);
+          }
+          setCreatedAt(value);
+        }}
+        onBlur={() => runValidationTasks("createdAt", createdAt)}
+        errorMessage={errors.createdAt?.errorMessage}
+        hasError={errors.createdAt?.hasError}
+        {...getOverrideProps(overrides, "createdAt")}
+      ></TextField>
+      <TextField
+        label="Updated at"
+        isRequired={true}
+        isReadOnly={false}
+        value={updatedAt}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              workoutids,
+              description,
+              createdAt,
+              updatedAt: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.updatedAt ?? value;
+          }
+          if (errors.updatedAt?.hasError) {
+            runValidationTasks("updatedAt", value);
+          }
+          setUpdatedAt(value);
+        }}
+        onBlur={() => runValidationTasks("updatedAt", updatedAt)}
+        errorMessage={errors.updatedAt?.errorMessage}
+        hasError={errors.updatedAt?.hasError}
+        {...getOverrideProps(overrides, "updatedAt")}
       ></TextField>
       <Flex
         justifyContent="space-between"
