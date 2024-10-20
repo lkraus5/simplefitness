@@ -185,12 +185,12 @@ export default function ExerciseCreateForm(props) {
   } = props;
   const initialValues = {
     name: "",
-    targetedMuscles: [],
+    targetedMusclesIds: [],
     description: "",
   };
   const [name, setName] = React.useState(initialValues.name);
-  const [targetedMuscles, setTargetedMuscles] = React.useState(
-    initialValues.targetedMuscles
+  const [targetedMusclesIds, setTargetedMusclesIds] = React.useState(
+    initialValues.targetedMusclesIds
   );
   const [description, setDescription] = React.useState(
     initialValues.description
@@ -198,17 +198,17 @@ export default function ExerciseCreateForm(props) {
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setName(initialValues.name);
-    setTargetedMuscles(initialValues.targetedMuscles);
-    setCurrentTargetedMusclesValue("");
+    setTargetedMusclesIds(initialValues.targetedMusclesIds);
+    setCurrentTargetedMusclesIdsValue("");
     setDescription(initialValues.description);
     setErrors({});
   };
-  const [currentTargetedMusclesValue, setCurrentTargetedMusclesValue] =
+  const [currentTargetedMusclesIdsValue, setCurrentTargetedMusclesIdsValue] =
     React.useState("");
-  const targetedMusclesRef = React.createRef();
+  const targetedMusclesIdsRef = React.createRef();
   const validations = {
     name: [{ type: "Required" }],
-    targetedMuscles: [],
+    targetedMusclesIds: [],
     description: [],
   };
   const runValidationTasks = async (
@@ -238,7 +238,7 @@ export default function ExerciseCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           name,
-          targetedMuscles,
+          targetedMusclesIds,
           description,
         };
         const validationResponses = await Promise.all(
@@ -303,7 +303,7 @@ export default function ExerciseCreateForm(props) {
           if (onChange) {
             const modelFields = {
               name: value,
-              targetedMuscles,
+              targetedMusclesIds,
               description,
             };
             const result = onChange(modelFields);
@@ -325,50 +325,53 @@ export default function ExerciseCreateForm(props) {
           if (onChange) {
             const modelFields = {
               name,
-              targetedMuscles: values,
+              targetedMusclesIds: values,
               description,
             };
             const result = onChange(modelFields);
-            values = result?.targetedMuscles ?? values;
+            values = result?.targetedMusclesIds ?? values;
           }
-          setTargetedMuscles(values);
-          setCurrentTargetedMusclesValue("");
+          setTargetedMusclesIds(values);
+          setCurrentTargetedMusclesIdsValue("");
         }}
-        currentFieldValue={currentTargetedMusclesValue}
-        label={"Targeted muscles"}
-        items={targetedMuscles}
-        hasError={errors?.targetedMuscles?.hasError}
+        currentFieldValue={currentTargetedMusclesIdsValue}
+        label={"Targeted muscles ids"}
+        items={targetedMusclesIds}
+        hasError={errors?.targetedMusclesIds?.hasError}
         runValidationTasks={async () =>
           await runValidationTasks(
-            "targetedMuscles",
-            currentTargetedMusclesValue
+            "targetedMusclesIds",
+            currentTargetedMusclesIdsValue
           )
         }
-        errorMessage={errors?.targetedMuscles?.errorMessage}
-        setFieldValue={setCurrentTargetedMusclesValue}
-        inputFieldRef={targetedMusclesRef}
+        errorMessage={errors?.targetedMusclesIds?.errorMessage}
+        setFieldValue={setCurrentTargetedMusclesIdsValue}
+        inputFieldRef={targetedMusclesIdsRef}
         defaultFieldValue={""}
       >
         <TextField
-          label="Targeted muscles"
+          label="Targeted muscles ids"
           isRequired={false}
           isReadOnly={false}
-          value={currentTargetedMusclesValue}
+          value={currentTargetedMusclesIdsValue}
           onChange={(e) => {
             let { value } = e.target;
-            if (errors.targetedMuscles?.hasError) {
-              runValidationTasks("targetedMuscles", value);
+            if (errors.targetedMusclesIds?.hasError) {
+              runValidationTasks("targetedMusclesIds", value);
             }
-            setCurrentTargetedMusclesValue(value);
+            setCurrentTargetedMusclesIdsValue(value);
           }}
           onBlur={() =>
-            runValidationTasks("targetedMuscles", currentTargetedMusclesValue)
+            runValidationTasks(
+              "targetedMusclesIds",
+              currentTargetedMusclesIdsValue
+            )
           }
-          errorMessage={errors.targetedMuscles?.errorMessage}
-          hasError={errors.targetedMuscles?.hasError}
-          ref={targetedMusclesRef}
+          errorMessage={errors.targetedMusclesIds?.errorMessage}
+          hasError={errors.targetedMusclesIds?.hasError}
+          ref={targetedMusclesIdsRef}
           labelHidden={true}
-          {...getOverrideProps(overrides, "targetedMuscles")}
+          {...getOverrideProps(overrides, "targetedMusclesIds")}
         ></TextField>
       </ArrayField>
       <TextField
@@ -381,7 +384,7 @@ export default function ExerciseCreateForm(props) {
           if (onChange) {
             const modelFields = {
               name,
-              targetedMuscles,
+              targetedMusclesIds,
               description: value,
             };
             const result = onChange(modelFields);

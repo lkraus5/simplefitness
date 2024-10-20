@@ -12,7 +12,11 @@ export const createExercise = /* GraphQL */ `
       description
       id
       name
-      targetedMuscles
+      targetedMuscles {
+        nextToken
+        __typename
+      }
+      targetedMusclesIds
       updatedAt
       __typename
     }
@@ -27,13 +31,33 @@ export const createMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      muscleGroupIds
+      muscleGroups {
+        nextToken
+        __typename
+      }
       owner
-      periodLength
       updatedAt
       workoutPeriods {
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const createMuscleGroup = /* GraphQL */ `
+  mutation CreateMuscleGroup(
+    $condition: ModelMuscleGroupConditionInput
+    $input: CreateMuscleGroupInput!
+  ) {
+    createMuscleGroup(condition: $condition, input: $input) {
+      createdAt
+      description
+      id
+      metadata
+      name
+      updatedAt
       __typename
     }
   }
@@ -72,7 +96,7 @@ export const createSet = /* GraphQL */ `
         description
         id
         name
-        targetedMuscles
+        targetedMusclesIds
         updatedAt
         __typename
       }
@@ -147,7 +171,11 @@ export const deleteExercise = /* GraphQL */ `
       description
       id
       name
-      targetedMuscles
+      targetedMuscles {
+        nextToken
+        __typename
+      }
+      targetedMusclesIds
       updatedAt
       __typename
     }
@@ -162,13 +190,33 @@ export const deleteMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      muscleGroupIds
+      muscleGroups {
+        nextToken
+        __typename
+      }
       owner
-      periodLength
       updatedAt
       workoutPeriods {
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const deleteMuscleGroup = /* GraphQL */ `
+  mutation DeleteMuscleGroup(
+    $condition: ModelMuscleGroupConditionInput
+    $input: DeleteMuscleGroupInput!
+  ) {
+    deleteMuscleGroup(condition: $condition, input: $input) {
+      createdAt
+      description
+      id
+      metadata
+      name
+      updatedAt
       __typename
     }
   }
@@ -207,7 +255,7 @@ export const deleteSet = /* GraphQL */ `
         description
         id
         name
-        targetedMuscles
+        targetedMusclesIds
         updatedAt
         __typename
       }
@@ -282,7 +330,11 @@ export const updateExercise = /* GraphQL */ `
       description
       id
       name
-      targetedMuscles
+      targetedMuscles {
+        nextToken
+        __typename
+      }
+      targetedMusclesIds
       updatedAt
       __typename
     }
@@ -297,13 +349,33 @@ export const updateMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      muscleGroupIds
+      muscleGroups {
+        nextToken
+        __typename
+      }
       owner
-      periodLength
       updatedAt
       workoutPeriods {
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const updateMuscleGroup = /* GraphQL */ `
+  mutation UpdateMuscleGroup(
+    $condition: ModelMuscleGroupConditionInput
+    $input: UpdateMuscleGroupInput!
+  ) {
+    updateMuscleGroup(condition: $condition, input: $input) {
+      createdAt
+      description
+      id
+      metadata
+      name
+      updatedAt
       __typename
     }
   }
@@ -342,7 +414,7 @@ export const updateSet = /* GraphQL */ `
         description
         id
         name
-        targetedMuscles
+        targetedMusclesIds
         updatedAt
         __typename
       }

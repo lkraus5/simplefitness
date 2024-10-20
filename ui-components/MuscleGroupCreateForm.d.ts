@@ -15,31 +15,31 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type ExerciseCreateFormInputValues = {
+export declare type MuscleGroupCreateFormInputValues = {
     name?: string;
-    targetedMusclesIds?: string[];
     description?: string;
+    metadata?: string;
 };
-export declare type ExerciseCreateFormValidationValues = {
+export declare type MuscleGroupCreateFormValidationValues = {
     name?: ValidationFunction<string>;
-    targetedMusclesIds?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
+    metadata?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type ExerciseCreateFormOverridesProps = {
-    ExerciseCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type MuscleGroupCreateFormOverridesProps = {
+    MuscleGroupCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
-    targetedMusclesIds?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
+    metadata?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type ExerciseCreateFormProps = React.PropsWithChildren<{
-    overrides?: ExerciseCreateFormOverridesProps | undefined | null;
+export declare type MuscleGroupCreateFormProps = React.PropsWithChildren<{
+    overrides?: MuscleGroupCreateFormOverridesProps | undefined | null;
 } & {
     clearOnSuccess?: boolean;
-    onSubmit?: (fields: ExerciseCreateFormInputValues) => ExerciseCreateFormInputValues;
-    onSuccess?: (fields: ExerciseCreateFormInputValues) => void;
-    onError?: (fields: ExerciseCreateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: ExerciseCreateFormInputValues) => ExerciseCreateFormInputValues;
-    onValidate?: ExerciseCreateFormValidationValues;
+    onSubmit?: (fields: MuscleGroupCreateFormInputValues) => MuscleGroupCreateFormInputValues;
+    onSuccess?: (fields: MuscleGroupCreateFormInputValues) => void;
+    onError?: (fields: MuscleGroupCreateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: MuscleGroupCreateFormInputValues) => MuscleGroupCreateFormInputValues;
+    onValidate?: MuscleGroupCreateFormValidationValues;
 } & React.CSSProperties>;
-export default function ExerciseCreateForm(props: ExerciseCreateFormProps): React.ReactElement;
+export default function MuscleGroupCreateForm(props: MuscleGroupCreateFormProps): React.ReactElement;

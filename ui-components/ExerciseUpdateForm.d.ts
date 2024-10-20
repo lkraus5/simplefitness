@@ -18,19 +18,19 @@ export declare type ValidationResponse = {
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type ExerciseUpdateFormInputValues = {
     name?: string;
-    targetedMuscles?: string[];
+    targetedMusclesIds?: string[];
     description?: string;
 };
 export declare type ExerciseUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
-    targetedMuscles?: ValidationFunction<string>;
+    targetedMusclesIds?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ExerciseUpdateFormOverridesProps = {
     ExerciseUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
     name?: PrimitiveOverrideProps<TextFieldProps>;
-    targetedMuscles?: PrimitiveOverrideProps<TextFieldProps>;
+    targetedMusclesIds?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type ExerciseUpdateFormProps = React.PropsWithChildren<{

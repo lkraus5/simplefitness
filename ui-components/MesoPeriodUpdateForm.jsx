@@ -1,12 +1,178 @@
 /* eslint-disable */
 "use client";
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Badge,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Icon,
+  ScrollView,
+  Text,
+  TextField,
+  useTheme,
+} from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
 import { getMesoPeriod } from "./graphql/queries";
 import { updateMesoPeriod } from "./graphql/mutations";
 const client = generateClient();
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  runValidationTasks,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    const { hasError } = runValidationTasks();
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button size="small" variation="link" onClick={addItem}>
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function MesoPeriodUpdateForm(props) {
   const {
     id: idProp,
@@ -20,16 +186,16 @@ export default function MesoPeriodUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    periodLength: "",
     description: "",
+    muscleGroupIds: [],
     createdAt: "",
     updatedAt: "",
   };
-  const [periodLength, setPeriodLength] = React.useState(
-    initialValues.periodLength
-  );
   const [description, setDescription] = React.useState(
     initialValues.description
+  );
+  const [muscleGroupIds, setMuscleGroupIds] = React.useState(
+    initialValues.muscleGroupIds
   );
   const [createdAt, setCreatedAt] = React.useState(initialValues.createdAt);
   const [updatedAt, setUpdatedAt] = React.useState(initialValues.updatedAt);
@@ -38,8 +204,9 @@ export default function MesoPeriodUpdateForm(props) {
     const cleanValues = mesoPeriodRecord
       ? { ...initialValues, ...mesoPeriodRecord }
       : initialValues;
-    setPeriodLength(cleanValues.periodLength);
     setDescription(cleanValues.description);
+    setMuscleGroupIds(cleanValues.muscleGroupIds ?? []);
+    setCurrentMuscleGroupIdsValue("");
     setCreatedAt(cleanValues.createdAt);
     setUpdatedAt(cleanValues.updatedAt);
     setErrors({});
@@ -61,9 +228,12 @@ export default function MesoPeriodUpdateForm(props) {
     queryData();
   }, [idProp, mesoPeriodModelProp]);
   React.useEffect(resetStateValues, [mesoPeriodRecord]);
+  const [currentMuscleGroupIdsValue, setCurrentMuscleGroupIdsValue] =
+    React.useState("");
+  const muscleGroupIdsRef = React.createRef();
   const validations = {
-    periodLength: [],
     description: [],
+    muscleGroupIds: [],
     createdAt: [{ type: "Required" }],
     updatedAt: [{ type: "Required" }],
   };
@@ -93,8 +263,8 @@ export default function MesoPeriodUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          periodLength: periodLength ?? null,
           description: description ?? null,
+          muscleGroupIds: muscleGroupIds ?? null,
           createdAt,
           updatedAt,
         };
@@ -149,33 +319,6 @@ export default function MesoPeriodUpdateForm(props) {
       {...rest}
     >
       <TextField
-        label="Period length"
-        isRequired={false}
-        isReadOnly={false}
-        value={periodLength}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              periodLength: value,
-              description,
-              createdAt,
-              updatedAt,
-            };
-            const result = onChange(modelFields);
-            value = result?.periodLength ?? value;
-          }
-          if (errors.periodLength?.hasError) {
-            runValidationTasks("periodLength", value);
-          }
-          setPeriodLength(value);
-        }}
-        onBlur={() => runValidationTasks("periodLength", periodLength)}
-        errorMessage={errors.periodLength?.errorMessage}
-        hasError={errors.periodLength?.hasError}
-        {...getOverrideProps(overrides, "periodLength")}
-      ></TextField>
-      <TextField
         label="Description"
         isRequired={false}
         isReadOnly={false}
@@ -184,8 +327,8 @@ export default function MesoPeriodUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              periodLength,
               description: value,
+              muscleGroupIds,
               createdAt,
               updatedAt,
             };
@@ -202,6 +345,56 @@ export default function MesoPeriodUpdateForm(props) {
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
       ></TextField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              description,
+              muscleGroupIds: values,
+              createdAt,
+              updatedAt,
+            };
+            const result = onChange(modelFields);
+            values = result?.muscleGroupIds ?? values;
+          }
+          setMuscleGroupIds(values);
+          setCurrentMuscleGroupIdsValue("");
+        }}
+        currentFieldValue={currentMuscleGroupIdsValue}
+        label={"Muscle group ids"}
+        items={muscleGroupIds}
+        hasError={errors?.muscleGroupIds?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks("muscleGroupIds", currentMuscleGroupIdsValue)
+        }
+        errorMessage={errors?.muscleGroupIds?.errorMessage}
+        setFieldValue={setCurrentMuscleGroupIdsValue}
+        inputFieldRef={muscleGroupIdsRef}
+        defaultFieldValue={""}
+      >
+        <TextField
+          label="Muscle group ids"
+          isRequired={false}
+          isReadOnly={false}
+          value={currentMuscleGroupIdsValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.muscleGroupIds?.hasError) {
+              runValidationTasks("muscleGroupIds", value);
+            }
+            setCurrentMuscleGroupIdsValue(value);
+          }}
+          onBlur={() =>
+            runValidationTasks("muscleGroupIds", currentMuscleGroupIdsValue)
+          }
+          errorMessage={errors.muscleGroupIds?.errorMessage}
+          hasError={errors.muscleGroupIds?.hasError}
+          ref={muscleGroupIdsRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "muscleGroupIds")}
+        ></TextField>
+      </ArrayField>
       <TextField
         label="Created at"
         isRequired={true}
@@ -211,8 +404,8 @@ export default function MesoPeriodUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              periodLength,
               description,
+              muscleGroupIds,
               createdAt: value,
               updatedAt,
             };
@@ -238,8 +431,8 @@ export default function MesoPeriodUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              periodLength,
               description,
+              muscleGroupIds,
               createdAt,
               updatedAt: value,
             };

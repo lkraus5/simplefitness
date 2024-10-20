@@ -9,7 +9,11 @@ export const onCreateExercise = /* GraphQL */ `
       description
       id
       name
-      targetedMuscles
+      targetedMuscles {
+        nextToken
+        __typename
+      }
+      targetedMusclesIds
       updatedAt
       __typename
     }
@@ -24,13 +28,32 @@ export const onCreateMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      muscleGroupIds
+      muscleGroups {
+        nextToken
+        __typename
+      }
       owner
-      periodLength
       updatedAt
       workoutPeriods {
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const onCreateMuscleGroup = /* GraphQL */ `
+  subscription OnCreateMuscleGroup(
+    $filter: ModelSubscriptionMuscleGroupFilterInput
+  ) {
+    onCreateMuscleGroup(filter: $filter) {
+      createdAt
+      description
+      id
+      metadata
+      name
+      updatedAt
       __typename
     }
   }
@@ -69,7 +92,7 @@ export const onCreateSet = /* GraphQL */ `
         description
         id
         name
-        targetedMuscles
+        targetedMusclesIds
         updatedAt
         __typename
       }
@@ -141,7 +164,11 @@ export const onDeleteExercise = /* GraphQL */ `
       description
       id
       name
-      targetedMuscles
+      targetedMuscles {
+        nextToken
+        __typename
+      }
+      targetedMusclesIds
       updatedAt
       __typename
     }
@@ -156,13 +183,32 @@ export const onDeleteMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      muscleGroupIds
+      muscleGroups {
+        nextToken
+        __typename
+      }
       owner
-      periodLength
       updatedAt
       workoutPeriods {
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const onDeleteMuscleGroup = /* GraphQL */ `
+  subscription OnDeleteMuscleGroup(
+    $filter: ModelSubscriptionMuscleGroupFilterInput
+  ) {
+    onDeleteMuscleGroup(filter: $filter) {
+      createdAt
+      description
+      id
+      metadata
+      name
+      updatedAt
       __typename
     }
   }
@@ -201,7 +247,7 @@ export const onDeleteSet = /* GraphQL */ `
         description
         id
         name
-        targetedMuscles
+        targetedMusclesIds
         updatedAt
         __typename
       }
@@ -273,7 +319,11 @@ export const onUpdateExercise = /* GraphQL */ `
       description
       id
       name
-      targetedMuscles
+      targetedMuscles {
+        nextToken
+        __typename
+      }
+      targetedMusclesIds
       updatedAt
       __typename
     }
@@ -288,13 +338,32 @@ export const onUpdateMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      muscleGroupIds
+      muscleGroups {
+        nextToken
+        __typename
+      }
       owner
-      periodLength
       updatedAt
       workoutPeriods {
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const onUpdateMuscleGroup = /* GraphQL */ `
+  subscription OnUpdateMuscleGroup(
+    $filter: ModelSubscriptionMuscleGroupFilterInput
+  ) {
+    onUpdateMuscleGroup(filter: $filter) {
+      createdAt
+      description
+      id
+      metadata
+      name
+      updatedAt
       __typename
     }
   }
@@ -333,7 +402,7 @@ export const onUpdateSet = /* GraphQL */ `
         description
         id
         name
-        targetedMuscles
+        targetedMusclesIds
         updatedAt
         __typename
       }

@@ -9,7 +9,11 @@ export const getExercise = /* GraphQL */ `
       description
       id
       name
-      targetedMuscles
+      targetedMuscles {
+        nextToken
+        __typename
+      }
+      targetedMusclesIds
       updatedAt
       __typename
     }
@@ -21,13 +25,30 @@ export const getMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
+      muscleGroupIds
+      muscleGroups {
+        nextToken
+        __typename
+      }
       owner
-      periodLength
       updatedAt
       workoutPeriods {
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const getMuscleGroup = /* GraphQL */ `
+  query GetMuscleGroup($id: ID!) {
+    getMuscleGroup(id: $id) {
+      createdAt
+      description
+      id
+      metadata
+      name
+      updatedAt
       __typename
     }
   }
@@ -60,7 +81,7 @@ export const getSet = /* GraphQL */ `
         description
         id
         name
-        targetedMuscles
+        targetedMusclesIds
         updatedAt
         __typename
       }
@@ -131,7 +152,7 @@ export const listExercises = /* GraphQL */ `
         description
         id
         name
-        targetedMuscles
+        targetedMusclesIds
         updatedAt
         __typename
       }
@@ -151,8 +172,29 @@ export const listMesoPeriods = /* GraphQL */ `
         createdAt
         description
         id
+        muscleGroupIds
         owner
-        periodLength
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const listMuscleGroups = /* GraphQL */ `
+  query ListMuscleGroups(
+    $filter: ModelMuscleGroupFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMuscleGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        createdAt
+        description
+        id
+        metadata
+        name
         updatedAt
         __typename
       }

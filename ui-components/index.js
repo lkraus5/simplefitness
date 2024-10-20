@@ -1,5 +1,7 @@
 export { default as ExerciseCreateForm } from "./ExerciseCreateForm";
 export { default as ExerciseUpdateForm } from "./ExerciseUpdateForm";
+export { default as MuscleGroupCreateForm } from "./MuscleGroupCreateForm";
+export { default as MuscleGroupUpdateForm } from "./MuscleGroupUpdateForm";
 export { default as WorkoutCreateForm } from "./WorkoutCreateForm";
 export { default as WorkoutUpdateForm } from "./WorkoutUpdateForm";
 export { default as SessionCreateForm } from "./SessionCreateForm";
