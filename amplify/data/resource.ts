@@ -64,7 +64,7 @@ type Exercise @model  @auth(rules: [ {allow: private, provider: userPools}, { al
   id: ID!
   name: String!
   targetedMusclesIds: [ID]
-  targetedMusclesIds: [MuscleGroup] @hasMany(fields: ["targetedMusclesIds"])
+  targetedMuscles: [MuscleGroup] @hasMany(fields: ["targetedMusclesIds"])
   description: String
 }
 
