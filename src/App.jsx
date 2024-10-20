@@ -18,7 +18,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 // import { generateClient } from "aws-amplify/data";
 // import ExerciseCreateForm from "../ui-components/ExerciseCreateForm"
-import MesoPage from './pages/MesoPage';
+import SetupPage from './pages/SetupPage';
 // import AdminPage from './pages/AdminPage'
 // const client = generateClient<Schema>();
 
@@ -34,6 +34,8 @@ export default function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('MesoPage');
   const toggle = () => { setIsOpen(!isOpen)};
+  const setPageMeso = () => { setCurrentPage('MesoPage')};
+  const setPageAdmin = () => { setCurrentPage('AdminPage')};
   // const showPage = (pagename) => { 
   //   console.log(pagename)
   //   setCurrentPage(pagename) }
@@ -48,8 +50,8 @@ export default function App() {
             <NavbarToggler onClick={toggle} />
             <Collapse className='navDropdown dropdownBox' isOpen={isOpen} navbar>
                 <Nav className="me-auto navDropdown" navbar>
-                    <NavItem className='navDropdownItem btn' onClick={setCurrentPage('MesoPage')} >MesoCycle</NavItem>
-                    <NavItem className='navDropdownItem btn' onClick={setCurrentPage('AdminPage')}>Admin</NavItem>
+                    <NavItem className='navDropdownItem btn' active={ currentPage == 'MesoPage' } onClick={ setPageMeso  } >MesoCycle</NavItem>
+                    <NavItem className='navDropdownItem btn' active={ currentPage == 'AdminPage' } onClick={ setPageAdmin } >Admin</NavItem>
                     <hr />
                     <NavItem className='navDropdownItem btn' onClick={signOut}>Sign out</NavItem>
                 </Nav>
@@ -57,8 +59,8 @@ export default function App() {
         </Navbar>
         <div className='MainPanel'>
             {/* <Page input={currentPage} /> */}
-            <MesoPage />
-            {/* { currentPage && currentPage == 'MesoPage' && <MesoPage /> } */}
+            {/* <SetupPage /> */}
+            { currentPage && currentPage == 'MesoPage' && <SetupPage /> }
             {/* { currentPage && currentPage == 'AdminPage' && <AdminPage /> } */}
         </div>
       </>}
