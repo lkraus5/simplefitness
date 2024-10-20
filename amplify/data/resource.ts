@@ -63,8 +63,16 @@ const schema = `
 type Exercise @model  @auth(rules: [ {allow: private, provider: userPools}, { allow: private, provider: iam}])  {
   id: ID!
   name: String!
-  targetedMuscles: [String]
+  targetedMusclesIds: [ID]
+  targetedMusclesIds: [MuscleGroup] @hasMany(fields: ["targetedMusclesIds"])
   description: String
+}
+
+type MuscleGroup @model  @auth(rules: [ {allow: private, provider: userPools}, { allow: private, provider: iam}])  {
+  id: ID!
+  name: String!
+  description: String
+  metadata: String
 }
 
 type Workout @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
@@ -115,8 +123,9 @@ type WorkoutPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provi
 type MesoPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
   id: ID!
   workoutPeriods: [WorkoutPeriod]  @hasMany(indexName:"workoutPeriodByMesoPeriod", fields:["id"])
-  periodLength: String
   description: String
+  muscleGroupIds: [ID]
+  muscleGroups: [MuscleGroup] @hasMany(fields: ["muscleGroupIds"])
   createdAt: String!
   updatedAt: String!
 }`
