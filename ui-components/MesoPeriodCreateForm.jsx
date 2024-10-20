@@ -1,7 +1,7 @@
 /* eslint-disable */
 "use client";
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import { Button, Flex, Grid, TextField, Input, Label  } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
 import { createMesoPeriod } from "./graphql/mutations";
@@ -18,13 +18,9 @@ export default function MesoPeriodCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
-    periodLength: "",
-    description: "",
-    createdAt: "",
-    updatedAt: "",
+    periodLength: "1",
+    description: ""
   };
-  const [name, setName] = React.useState(initialValues.name);
   const [periodLength, setPeriodLength] = React.useState(
     initialValues.periodLength
   );
@@ -35,7 +31,6 @@ export default function MesoPeriodCreateForm(props) {
   const [updatedAt, setUpdatedAt] = React.useState(initialValues.updatedAt);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setName(initialValues.name);
     setPeriodLength(initialValues.periodLength);
     setDescription(initialValues.description);
     setCreatedAt(initialValues.createdAt);
@@ -43,7 +38,6 @@ export default function MesoPeriodCreateForm(props) {
     setErrors({});
   };
   const validations = {
-    name: [{ type: "Required" }],
     periodLength: [],
     description: [],
     createdAt: [{ type: "Required" }],
@@ -75,11 +69,8 @@ export default function MesoPeriodCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
           periodLength,
-          description,
-          createdAt,
-          updatedAt,
+          description
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -133,51 +124,24 @@ export default function MesoPeriodCreateForm(props) {
       {...getOverrideProps(overrides, "MesoPeriodCreateForm")}
       {...rest}
     >
-      <TextField
-        label="Name"
-        isRequired={true}
-        isReadOnly={false}
-        value={name}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name: value,
-              periodLength,
-              description,
-              createdAt,
-              updatedAt,
-            };
-            const result = onChange(modelFields);
-            value = result?.name ?? value;
-          }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
-          }
-          setName(value);
-        }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
-      ></TextField>
-      <TextField
-        label="Period length"
+      <Label htmlFor="Period_length" >Training Period (Weeks) </Label>
+      <Input
+        id="Period_length"
+        type="number"
         isRequired={false}
         isReadOnly={false}
         value={periodLength}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
-            const modelFields = {
-              name,
-              periodLength: value,
-              description,
-              createdAt,
-              updatedAt,
-            };
-            const result = onChange(modelFields);
-            value = result?.periodLength ?? value;
+            if (value <= 12 & value >= 1) {
+              const modelFields = {
+                periodLength: value.toString(),
+                description
+              };
+              const result = onChange(modelFields);
+              value = result?.periodLength ?? value;
+            }
           }
           if (errors.periodLength?.hasError) {
             runValidationTasks("periodLength", value);
@@ -188,7 +152,7 @@ export default function MesoPeriodCreateForm(props) {
         errorMessage={errors.periodLength?.errorMessage}
         hasError={errors.periodLength?.hasError}
         {...getOverrideProps(overrides, "periodLength")}
-      ></TextField>
+      ></Input>
       <TextField
         label="Description"
         isRequired={false}
@@ -198,11 +162,8 @@ export default function MesoPeriodCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
               periodLength,
-              description: value,
-              createdAt,
-              updatedAt,
+              description: value
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -216,62 +177,6 @@ export default function MesoPeriodCreateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
-      ></TextField>
-      <TextField
-        label="Created at"
-        isRequired={true}
-        isReadOnly={false}
-        value={createdAt}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              periodLength,
-              description,
-              createdAt: value,
-              updatedAt,
-            };
-            const result = onChange(modelFields);
-            value = result?.createdAt ?? value;
-          }
-          if (errors.createdAt?.hasError) {
-            runValidationTasks("createdAt", value);
-          }
-          setCreatedAt(value);
-        }}
-        onBlur={() => runValidationTasks("createdAt", createdAt)}
-        errorMessage={errors.createdAt?.errorMessage}
-        hasError={errors.createdAt?.hasError}
-        {...getOverrideProps(overrides, "createdAt")}
-      ></TextField>
-      <TextField
-        label="Updated at"
-        isRequired={true}
-        isReadOnly={false}
-        value={updatedAt}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name,
-              periodLength,
-              description,
-              createdAt,
-              updatedAt: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.updatedAt ?? value;
-          }
-          if (errors.updatedAt?.hasError) {
-            runValidationTasks("updatedAt", value);
-          }
-          setUpdatedAt(value);
-        }}
-        onBlur={() => runValidationTasks("updatedAt", updatedAt)}
-        errorMessage={errors.updatedAt?.errorMessage}
-        hasError={errors.updatedAt?.hasError}
-        {...getOverrideProps(overrides, "updatedAt")}
       ></TextField>
       <Flex
         justifyContent="space-between"

@@ -27,7 +27,6 @@ export const createMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
-      name
       owner
       periodLength
       updatedAt
@@ -163,7 +162,6 @@ export const deleteMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
-      name
       owner
       periodLength
       updatedAt
@@ -299,7 +297,6 @@ export const updateMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
-      name
       owner
       periodLength
       updatedAt

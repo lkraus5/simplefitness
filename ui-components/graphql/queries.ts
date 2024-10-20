@@ -21,7 +21,6 @@ export const getMesoPeriod = /* GraphQL */ `
       createdAt
       description
       id
-      name
       owner
       periodLength
       updatedAt
@@ -152,7 +151,6 @@ export const listMesoPeriods = /* GraphQL */ `
         createdAt
         description
         id
-        name
         owner
         periodLength
         updatedAt

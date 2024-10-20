@@ -20,13 +20,11 @@ export default function MesoPeriodUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
     periodLength: "",
     description: "",
     createdAt: "",
     updatedAt: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
   const [periodLength, setPeriodLength] = React.useState(
     initialValues.periodLength
   );
@@ -40,7 +38,6 @@ export default function MesoPeriodUpdateForm(props) {
     const cleanValues = mesoPeriodRecord
       ? { ...initialValues, ...mesoPeriodRecord }
       : initialValues;
-    setName(cleanValues.name);
     setPeriodLength(cleanValues.periodLength);
     setDescription(cleanValues.description);
     setCreatedAt(cleanValues.createdAt);
@@ -65,7 +62,6 @@ export default function MesoPeriodUpdateForm(props) {
   }, [idProp, mesoPeriodModelProp]);
   React.useEffect(resetStateValues, [mesoPeriodRecord]);
   const validations = {
-    name: [{ type: "Required" }],
     periodLength: [],
     description: [],
     createdAt: [{ type: "Required" }],
@@ -97,7 +93,6 @@ export default function MesoPeriodUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
           periodLength: periodLength ?? null,
           description: description ?? null,
           createdAt,
@@ -154,34 +149,6 @@ export default function MesoPeriodUpdateForm(props) {
       {...rest}
     >
       <TextField
-        label="Name"
-        isRequired={true}
-        isReadOnly={false}
-        value={name}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              name: value,
-              periodLength,
-              description,
-              createdAt,
-              updatedAt,
-            };
-            const result = onChange(modelFields);
-            value = result?.name ?? value;
-          }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
-          }
-          setName(value);
-        }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
-      ></TextField>
-      <TextField
         label="Period length"
         isRequired={false}
         isReadOnly={false}
@@ -190,7 +157,6 @@ export default function MesoPeriodUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
               periodLength: value,
               description,
               createdAt,
@@ -218,7 +184,6 @@ export default function MesoPeriodUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
               periodLength,
               description: value,
               createdAt,
@@ -246,7 +211,6 @@ export default function MesoPeriodUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
               periodLength,
               description,
               createdAt: value,
@@ -274,7 +238,6 @@ export default function MesoPeriodUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
               periodLength,
               description,
               createdAt,

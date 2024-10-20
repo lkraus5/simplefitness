@@ -16,14 +16,12 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type MesoPeriodCreateFormInputValues = {
-    name?: string;
     periodLength?: string;
     description?: string;
     createdAt?: string;
     updatedAt?: string;
 };
 export declare type MesoPeriodCreateFormValidationValues = {
-    name?: ValidationFunction<string>;
     periodLength?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
     createdAt?: ValidationFunction<string>;
@@ -32,7 +30,6 @@ export declare type MesoPeriodCreateFormValidationValues = {
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MesoPeriodCreateFormOverridesProps = {
     MesoPeriodCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    name?: PrimitiveOverrideProps<TextFieldProps>;
     periodLength?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
     createdAt?: PrimitiveOverrideProps<TextFieldProps>;
