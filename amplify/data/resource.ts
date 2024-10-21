@@ -111,7 +111,7 @@ type Set @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]
 
 type WorkoutPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
   id: ID!
-  name: String!
+  startDate: String!
   mesoPeriod: ID @index(name: "workoutPeriodByMesoPeriod", sortKeyFields: ["createdAt"])
   workoutids: [ID]
   workouts: [Workout] @hasMany(fields: ["workoutids"])
