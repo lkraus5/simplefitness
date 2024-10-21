@@ -184,13 +184,13 @@ export default function WorkoutPeriodCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
+    dayOneDate: "",
     workoutids: [],
     description: "",
     createdAt: "",
     updatedAt: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
+  const [dayOneDate, setDayOneDate] = React.useState(initialValues.dayOneDate);
   const [workoutids, setWorkoutids] = React.useState(initialValues.workoutids);
   const [description, setDescription] = React.useState(
     initialValues.description
@@ -199,7 +199,7 @@ export default function WorkoutPeriodCreateForm(props) {
   const [updatedAt, setUpdatedAt] = React.useState(initialValues.updatedAt);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setName(initialValues.name);
+    setDayOneDate(initialValues.dayOneDate);
     setWorkoutids(initialValues.workoutids);
     setCurrentWorkoutidsValue("");
     setDescription(initialValues.description);
@@ -211,7 +211,7 @@ export default function WorkoutPeriodCreateForm(props) {
     React.useState("");
   const workoutidsRef = React.createRef();
   const validations = {
-    name: [{ type: "Required" }],
+    dayOneDate: [{ type: "Required" }],
     workoutids: [],
     description: [],
     createdAt: [{ type: "Required" }],
@@ -243,7 +243,7 @@ export default function WorkoutPeriodCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
+          dayOneDate,
           workoutids,
           description,
           createdAt,
@@ -302,39 +302,39 @@ export default function WorkoutPeriodCreateForm(props) {
       {...rest}
     >
       <TextField
-        label="Name"
+        label="Day one date"
         isRequired={true}
         isReadOnly={false}
-        value={name}
+        value={dayOneDate}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name: value,
+              dayOneDate: value,
               workoutids,
               description,
               createdAt,
               updatedAt,
             };
             const result = onChange(modelFields);
-            value = result?.name ?? value;
+            value = result?.dayOneDate ?? value;
           }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
+          if (errors.dayOneDate?.hasError) {
+            runValidationTasks("dayOneDate", value);
           }
-          setName(value);
+          setDayOneDate(value);
         }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
+        onBlur={() => runValidationTasks("dayOneDate", dayOneDate)}
+        errorMessage={errors.dayOneDate?.errorMessage}
+        hasError={errors.dayOneDate?.hasError}
+        {...getOverrideProps(overrides, "dayOneDate")}
       ></TextField>
       <ArrayField
         onChange={async (items) => {
           let values = items;
           if (onChange) {
             const modelFields = {
-              name,
+              dayOneDate,
               workoutids: values,
               description,
               createdAt,
@@ -389,7 +389,7 @@ export default function WorkoutPeriodCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
+              dayOneDate,
               workoutids,
               description: value,
               createdAt,
@@ -417,7 +417,7 @@ export default function WorkoutPeriodCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
+              dayOneDate,
               workoutids,
               description,
               createdAt: value,
@@ -445,7 +445,7 @@ export default function WorkoutPeriodCreateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
+              dayOneDate,
               workoutids,
               description,
               createdAt,

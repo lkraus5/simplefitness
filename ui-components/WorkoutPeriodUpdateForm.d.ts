@@ -17,14 +17,14 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type WorkoutPeriodUpdateFormInputValues = {
-    name?: string;
+    dayOneDate?: string;
     workoutids?: string[];
     description?: string;
     createdAt?: string;
     updatedAt?: string;
 };
 export declare type WorkoutPeriodUpdateFormValidationValues = {
-    name?: ValidationFunction<string>;
+    dayOneDate?: ValidationFunction<string>;
     workoutids?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
     createdAt?: ValidationFunction<string>;
@@ -33,7 +33,7 @@ export declare type WorkoutPeriodUpdateFormValidationValues = {
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type WorkoutPeriodUpdateFormOverridesProps = {
     WorkoutPeriodUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    name?: PrimitiveOverrideProps<TextFieldProps>;
+    dayOneDate?: PrimitiveOverrideProps<TextFieldProps>;
     workoutids?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
     createdAt?: PrimitiveOverrideProps<TextFieldProps>;

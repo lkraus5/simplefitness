@@ -146,10 +146,10 @@ export const createWorkoutPeriod = /* GraphQL */ `
   ) {
     createWorkoutPeriod(condition: $condition, input: $input) {
       createdAt
+      dayOneDate
       description
       id
       mesoPeriod
-      name
       owner
       updatedAt
       workoutids
@@ -305,10 +305,10 @@ export const deleteWorkoutPeriod = /* GraphQL */ `
   ) {
     deleteWorkoutPeriod(condition: $condition, input: $input) {
       createdAt
+      dayOneDate
       description
       id
       mesoPeriod
-      name
       owner
       updatedAt
       workoutids
@@ -464,10 +464,10 @@ export const updateWorkoutPeriod = /* GraphQL */ `
   ) {
     updateWorkoutPeriod(condition: $condition, input: $input) {
       createdAt
+      dayOneDate
       description
       id
       mesoPeriod
-      name
       owner
       updatedAt
       workoutids

@@ -142,10 +142,10 @@ export const onCreateWorkoutPeriod = /* GraphQL */ `
   ) {
     onCreateWorkoutPeriod(filter: $filter, owner: $owner) {
       createdAt
+      dayOneDate
       description
       id
       mesoPeriod
-      name
       owner
       updatedAt
       workoutids
@@ -297,10 +297,10 @@ export const onDeleteWorkoutPeriod = /* GraphQL */ `
   ) {
     onDeleteWorkoutPeriod(filter: $filter, owner: $owner) {
       createdAt
+      dayOneDate
       description
       id
       mesoPeriod
-      name
       owner
       updatedAt
       workoutids
@@ -452,10 +452,10 @@ export const onUpdateWorkoutPeriod = /* GraphQL */ `
   ) {
     onUpdateWorkoutPeriod(filter: $filter, owner: $owner) {
       createdAt
+      dayOneDate
       description
       id
       mesoPeriod
-      name
       owner
       updatedAt
       workoutids

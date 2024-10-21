@@ -125,10 +125,10 @@ export const getWorkoutPeriod = /* GraphQL */ `
   query GetWorkoutPeriod($id: ID!) {
     getWorkoutPeriod(id: $id) {
       createdAt
+      dayOneDate
       description
       id
       mesoPeriod
-      name
       owner
       updatedAt
       workoutids
@@ -261,10 +261,10 @@ export const listWorkoutPeriods = /* GraphQL */ `
     listWorkoutPeriods(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         createdAt
+        dayOneDate
         description
         id
         mesoPeriod
-        name
         owner
         updatedAt
         workoutids
@@ -496,10 +496,10 @@ export const workoutPeriodsByMesoPeriodAndCreatedAt = /* GraphQL */ `
     ) {
       items {
         createdAt
+        dayOneDate
         description
         id
         mesoPeriod
-        name
         owner
         updatedAt
         workoutids
