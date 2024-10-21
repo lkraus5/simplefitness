@@ -75,6 +75,14 @@ type MuscleGroup @model  @auth(rules: [ {allow: private, provider: userPools}, {
   metadata: String
 }
 
+type WorkoutTemplate @model @auth(rules: [ {allow: private, provider: userpools }, { allow: private, provider: iam}]) {
+  id: ID!
+  name: String!
+  exerciseids: [ID]
+  exercises: [Exercise] @hasMany(fields: ["exerciseids"])
+  description: String
+}
+
 type Workout @model @auth(rules: [ {allow: owner}, { allow: private, provider: iam}]) {
   id: ID!
   name: String!
