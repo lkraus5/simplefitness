@@ -34,8 +34,12 @@ export default function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('MesoPage');
   const toggle = () => { setIsOpen(!isOpen)};
-  const setPageMeso = () => { setCurrentPage('MesoPage')};
-  const setPageAdmin = () => { setCurrentPage('AdminPage')};
+  const setPageMeso = () => { setCurrentPage('MesoPage');
+    setIsOpen(!isOpen);
+  };
+  const setPageAdmin = () => { setCurrentPage('AdminPage')
+    setIsOpen(!isOpen)
+  };
   // const showPage = (pagename) => { 
   //   console.log(pagename)
   //   setCurrentPage(pagename) }
