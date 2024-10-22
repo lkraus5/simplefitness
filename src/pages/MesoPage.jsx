@@ -98,14 +98,6 @@ class MesoPage extends React.Component{
 
     render(){
       return(<>
-          { !this.state.MostRecentMesocycle['id'] &&<>
-            <Card>
-              <CardHeader>Lets plan a workout</CardHeader>  
-              <MesoPeriodCreateForm />
-            </Card>
-            </>
-          }
-          
           { this.state.MostRecentMesocycle['id'] &&
             this.state.MostRecentMesocycle.id
           }
