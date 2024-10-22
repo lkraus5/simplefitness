@@ -121,6 +121,7 @@ type WorkoutPeriod @model @auth(rules: [ {allow: owner}, { allow: private, provi
   id: ID!
   dayOneDate: String!
   mesoPeriod: ID @index(name: "workoutPeriodByMesoPeriod", sortKeyFields: ["createdAt"])
+  schedule: [String]
   workoutids: [ID]
   workouts: [Workout] @hasMany(fields: ["workoutids"])
   description: String
