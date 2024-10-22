@@ -50,10 +50,10 @@ class SetupPage extends React.Component{
             allMuscleGroups: [],
             selectedMuscleGroups:[],
             MesoDescription: "",
-            startDateOptions: <></>
+            FirstStartDate: null,
         }
         this.getSetupData()
-        this.renderWeekSelect()
+        
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -62,28 +62,16 @@ class SetupPage extends React.Component{
         } 
     }
 
-    renderWeekSelect = (date = new Date()) => {
-      const today = new Date(date);
-      const daysUntilNextSunday = 7 - today.getDay();
-      const nextSundayDate = new Date(today);
-      nextSundayDate.setDate(today.getDate() + daysUntilNextSunday);
 
-      const secondSundayDate = new Date()
-      secondSundayDate.setDate(secondSundayDate.getDate() + daysUntilNextSunday +  7)
-      const thirdSundayDate = new Date()
-      thirdSundayDate.setDate(thirdSundayDate.getDate() + daysUntilNextSunday + 14)
-      console.log(nextSundayDate)
-      this.setState({ startDateOptions: <>
-        <option value={nextSundayDate}>
-          {nextSundayDate}
-        </option>
-        <option value={secondSundayDate}>
-          {secondSundayDate}
-        </option>
-        <option value={thirdSundayDate}>
-          {thirdSundayDate}
-        </option>
-      </>})
+
+    getLastSunday = () => {
+      const today = new Date();
+      const dayOfWeek = today.getDay(); // 0 for Sunday, 1 for Monday, etc.
+      const daysSinceSunday = dayOfWeek === 0 ? 7 : dayOfWeek; 
+      const lastSunday = new Date(today);
+      lastSunday.setDate(today.getDate() - daysSinceSunday);
+      this.setState({FirstStartDate: lastSunday})
+      return lastSunday;
     }
 
     getSetupData= async () => {
@@ -115,6 +103,8 @@ class SetupPage extends React.Component{
         statusUpdateInput['ExerciseData'] = Items
         console.log({statusUpdateInput})
         this.setState(statusUpdateInput)
+        
+
         
     }
 
@@ -152,19 +142,28 @@ class SetupPage extends React.Component{
       let modelFields = {}
       modelFields['muscleGroupIds'] = this.state.MuscleGroupData.filter((mg) => { if (state.selectedMuscleGroups.includes(mg.name)){ return(mg )  } }).map((mg) => {return(mg['id'])} )
       modelFields['description'] = state.MesoDescription
+      let workoutPeriodInput = {}
       console.log({modelFields})
 
       const client = generateClient();
       try {
         Object.entries(modelFields).forEach(([key, value]) => { if (typeof value === "string" && value === "") { modelFields[key] = null; } });
         const newMesoPeriodResponse = await client.graphql({ query: createMesoPeriod.replaceAll("__typename", ""), variables: { input: { ...modelFields, }, }, })
-        console.log({newMesoPeriodResponse})
+
+
+        
+        workoutPeriodInput['id'] = newMesoPeriodResponse['data']['createMesoPeriod']['id']
+        workoutPeriodInput['dayOneDate'] = this.getLastSunday()
+        const newWorkoutPeriodResponse = await client.graphql({ query: createWorkoutPeriod.replaceAll("__typename", ""), variables: { input: { ...workoutPeriodInput, }, }, })
+
+        console.log({newWorkoutPeriodResponse})
         this.setState({selectedMesoPeriod: newMesoPeriodResponse['data']['createMesoPeriod'],
+          mesoWorkoutPeriods: [ newWorkoutPeriodResponse['data']['createWorkoutPeriod'] ],
           setupStage: 1
-        })} catch (err) {
-          if (onError) {
-            const messages = err.errors.map((e) => e.message).join("\n");
-            console.log(messages)
+        })
+      } catch (err) {
+          if (err) {
+            console.log(err)
           }
         }
     }
@@ -178,21 +177,20 @@ class SetupPage extends React.Component{
                 <CardSubtitle>Which muscle groups are we targeting?</CardSubtitle>
                 <CardBody>
                     <Row>
-                      <Col className='col-6'>
+                      <Col>
                         <ListGroup >
                           <ListGroupItem onClick={ e => this.setFullBodyActive('FullBody') }> <Input type="checkbox" checked={ this.isFullBodyActive(this.state.allMuscleGroups, this.state.selectedMuscleGroups) } />  Full Body</ListGroupItem>
                           {  this.state.MuscleGroupData.map((mg) => {return(<ListGroupItem onClick={ e => this.selectMuscleGroups(mg.name)} ><Input type="checkbox" checked={this.state.selectedMuscleGroups.includes( mg.name)} />  {mg.name}</ListGroupItem>)})  }
                         </ListGroup>
                       </Col>
-                      <Col className='col-6'>
-                        <Label for="startDateSelect">Select Start Date:</Label>
-                        <Input type="select" name="select" id="startDateSelect">
-                          {this.state.startDateOptions }
-                        </Input> 
-                        <br />
+                    </Row>
+                    <br />
+                    <Row>
+                      <Col>
                         <Input className='descriptionInput' type="textarea" placeholder="Elaborate your goals for the next few weeks" onChange={ e => this.setState({MesoDescription: e.target.value  }) }/>
                       </Col>
                     </Row>
+                    <br />
                     <Row>
                       <Col>
                         <Button onClick={e => this.submitMesoPeriodSetup(this.state)} success>Next</Button>
@@ -201,19 +199,43 @@ class SetupPage extends React.Component{
                 </CardBody>
               </>}
               { this.state.setupStage == 1 && <>
-                <CardHeader>Lets pick some exercises</CardHeader>  
+                <CardHeader>Select which days you would like to work out.</CardHeader>  
                 <CardBody>
                     <Row>
-                      <Col className='col-6'>
+                      <Col>
                         <Table >
                           <tr>
                             <tr>
                               <td>Week 1</td>
-                              <td></td>
+                              <td> { this.state.FirstStartDate.toLocaleString().split(',')[0] } </td>
                             </tr>
                             <tr>
-                              <td></td>
-                              <td><Button>Add Workout Session</Button></td>
+                              <td>Sunday </td>
+                              <td><Button>Add Workout</Button></td>
+                            </tr>
+                            <tr>
+                              <td>Monday </td>
+                              <td><Button>Add Workout</Button></td>
+                            </tr>
+                            <tr>
+                              <td>Tuesday </td>
+                              <td><Button>Add Workout</Button></td>
+                            </tr>
+                            <tr>
+                              <td>Wednesday  </td>
+                              <td><Button>Add Workout</Button></td>
+                            </tr>
+                            <tr>
+                              <td>Thursday </td>
+                              <td><Button>Add Workout</Button></td>
+                            </tr>
+                            <tr>
+                              <td>Friday </td>
+                              <td><Button>Add Workout</Button></td>
+                            </tr>
+                            <tr>
+                              <td>Saturday </td>
+                              <td><Button>Add Workout</Button></td>
                             </tr>
                             
                           </tr>

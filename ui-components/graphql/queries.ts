@@ -140,6 +140,23 @@ export const getWorkoutPeriod = /* GraphQL */ `
     }
   }
 `;
+export const getWorkoutTemplate = /* GraphQL */ `
+  query GetWorkoutTemplate($id: ID!) {
+    getWorkoutTemplate(id: $id) {
+      createdAt
+      description
+      exerciseids
+      exercises {
+        nextToken
+        __typename
+      }
+      id
+      name
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const listExercises = /* GraphQL */ `
   query ListExercises(
     $filter: ModelExerciseFilterInput
@@ -268,6 +285,31 @@ export const listWorkoutPeriods = /* GraphQL */ `
         owner
         updatedAt
         workoutids
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const listWorkoutTemplates = /* GraphQL */ `
+  query ListWorkoutTemplates(
+    $filter: ModelWorkoutTemplateFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listWorkoutTemplates(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        createdAt
+        description
+        exerciseids
+        id
+        name
+        updatedAt
         __typename
       }
       nextToken

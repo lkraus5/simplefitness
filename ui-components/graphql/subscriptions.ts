@@ -157,6 +157,25 @@ export const onCreateWorkoutPeriod = /* GraphQL */ `
     }
   }
 `;
+export const onCreateWorkoutTemplate = /* GraphQL */ `
+  subscription OnCreateWorkoutTemplate(
+    $filter: ModelSubscriptionWorkoutTemplateFilterInput
+  ) {
+    onCreateWorkoutTemplate(filter: $filter) {
+      createdAt
+      description
+      exerciseids
+      exercises {
+        nextToken
+        __typename
+      }
+      id
+      name
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const onDeleteExercise = /* GraphQL */ `
   subscription OnDeleteExercise($filter: ModelSubscriptionExerciseFilterInput) {
     onDeleteExercise(filter: $filter) {
@@ -312,6 +331,25 @@ export const onDeleteWorkoutPeriod = /* GraphQL */ `
     }
   }
 `;
+export const onDeleteWorkoutTemplate = /* GraphQL */ `
+  subscription OnDeleteWorkoutTemplate(
+    $filter: ModelSubscriptionWorkoutTemplateFilterInput
+  ) {
+    onDeleteWorkoutTemplate(filter: $filter) {
+      createdAt
+      description
+      exerciseids
+      exercises {
+        nextToken
+        __typename
+      }
+      id
+      name
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const onUpdateExercise = /* GraphQL */ `
   subscription OnUpdateExercise($filter: ModelSubscriptionExerciseFilterInput) {
     onUpdateExercise(filter: $filter) {
@@ -463,6 +501,25 @@ export const onUpdateWorkoutPeriod = /* GraphQL */ `
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const onUpdateWorkoutTemplate = /* GraphQL */ `
+  subscription OnUpdateWorkoutTemplate(
+    $filter: ModelSubscriptionWorkoutTemplateFilterInput
+  ) {
+    onUpdateWorkoutTemplate(filter: $filter) {
+      createdAt
+      description
+      exerciseids
+      exercises {
+        nextToken
+        __typename
+      }
+      id
+      name
+      updatedAt
       __typename
     }
   }

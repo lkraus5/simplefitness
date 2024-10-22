@@ -161,6 +161,26 @@ export const createWorkoutPeriod = /* GraphQL */ `
     }
   }
 `;
+export const createWorkoutTemplate = /* GraphQL */ `
+  mutation CreateWorkoutTemplate(
+    $condition: ModelWorkoutTemplateConditionInput
+    $input: CreateWorkoutTemplateInput!
+  ) {
+    createWorkoutTemplate(condition: $condition, input: $input) {
+      createdAt
+      description
+      exerciseids
+      exercises {
+        nextToken
+        __typename
+      }
+      id
+      name
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const deleteExercise = /* GraphQL */ `
   mutation DeleteExercise(
     $condition: ModelExerciseConditionInput
@@ -320,6 +340,26 @@ export const deleteWorkoutPeriod = /* GraphQL */ `
     }
   }
 `;
+export const deleteWorkoutTemplate = /* GraphQL */ `
+  mutation DeleteWorkoutTemplate(
+    $condition: ModelWorkoutTemplateConditionInput
+    $input: DeleteWorkoutTemplateInput!
+  ) {
+    deleteWorkoutTemplate(condition: $condition, input: $input) {
+      createdAt
+      description
+      exerciseids
+      exercises {
+        nextToken
+        __typename
+      }
+      id
+      name
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const updateExercise = /* GraphQL */ `
   mutation UpdateExercise(
     $condition: ModelExerciseConditionInput
@@ -475,6 +515,26 @@ export const updateWorkoutPeriod = /* GraphQL */ `
         nextToken
         __typename
       }
+      __typename
+    }
+  }
+`;
+export const updateWorkoutTemplate = /* GraphQL */ `
+  mutation UpdateWorkoutTemplate(
+    $condition: ModelWorkoutTemplateConditionInput
+    $input: UpdateWorkoutTemplateInput!
+  ) {
+    updateWorkoutTemplate(condition: $condition, input: $input) {
+      createdAt
+      description
+      exerciseids
+      exercises {
+        nextToken
+        __typename
+      }
+      id
+      name
+      updatedAt
       __typename
     }
   }
